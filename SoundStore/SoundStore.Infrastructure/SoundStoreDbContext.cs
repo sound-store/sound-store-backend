@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SoundStore.Core.Entities;
 using SoundStore.Infrastructure.Configs;
+using SoundStore.Infrastructure.Data;
 
 namespace SoundStore.Infrastructure
 {
@@ -63,6 +64,10 @@ namespace SoundStore.Infrastructure
             new OrderDetailTypeConfig().Configure(builder.Entity<OrderDetail>());
             new TransactionTypeConfig().Configure(builder.Entity<Transaction>());
             new OrderTypeConfig().Configure(builder.Entity<Order>());
+            #endregion
+
+            #region Seed data
+            builder.SeedUserRoles();
             #endregion
         }
     }
