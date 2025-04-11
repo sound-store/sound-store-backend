@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SoundStore.Core.Entities;
+using SoundStore.Infrastructure.Configs;
 
 namespace SoundStore.Infrastructure
 {
@@ -55,6 +56,14 @@ namespace SoundStore.Infrastructure
                     entityType.SetTableName(tableName.Substring(6));
                 }
             }
+
+            #region Entity configurations
+            new SubCategoryTypeConfig().Configure(builder.Entity<SubCategory>());
+            new ProductTypeConfig().Configure(builder.Entity<Product>());
+            new OrderDetailTypeConfig().Configure(builder.Entity<OrderDetail>());
+            new TransactionTypeConfig().Configure(builder.Entity<Transaction>());
+            new OrderTypeConfig().Configure(builder.Entity<Order>());
+            #endregion
         }
     }
 }
