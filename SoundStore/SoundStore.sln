@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.API", "SoundStore.API\SoundStore.API.csproj", "{8F6B4041-8AE7-44BE-84AD-A986EDD67D82}"
 EndProject
@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BB2E5682-E33
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F8A99091-CEA6-4237-BD54-F8A24019465D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Test", "SoundStore.Test\SoundStore.Test.csproj", "{9CD6B270-BA58-4A66-AAAB-E99D2E41D686}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Service.Test", "SoundStore.Test\SoundStore.Service.Test.csproj", "{9CD6B270-BA58-4A66-AAAB-E99D2E41D686}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Controller.Test", "SoundStore.Controller.Test\SoundStore.Controller.Test.csproj", "{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{9CD6B270-BA58-4A66-AAAB-E99D2E41D686}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CD6B270-BA58-4A66-AAAB-E99D2E41D686}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CD6B270-BA58-4A66-AAAB-E99D2E41D686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +59,6 @@ Global
 		{04CD3B77-04CF-4D5F-9D83-5D236014266D} = {BB2E5682-E339-47F9-8A63-71B53880513C}
 		{5EF9A370-C56C-4EF8-BF4C-0D955C4283B7} = {BB2E5682-E339-47F9-8A63-71B53880513C}
 		{9CD6B270-BA58-4A66-AAAB-E99D2E41D686} = {F8A99091-CEA6-4237-BD54-F8A24019465D}
+		{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3} = {F8A99091-CEA6-4237-BD54-F8A24019465D}
 	EndGlobalSection
 EndGlobal

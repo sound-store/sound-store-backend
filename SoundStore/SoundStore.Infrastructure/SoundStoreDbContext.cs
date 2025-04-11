@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SoundStore.Core.Entities;
 
 namespace SoundStore.Infrastructure
 {
@@ -15,42 +15,28 @@ namespace SoundStore.Infrastructure
         {
         }
 
-        private string GetConnectionString()
-        {
-            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            
-            if ("Development" == env)
-            {
-                IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.{env}.json", optional: true)
-                    .Build();
+        public DbSet<AppUser> Users { get; set; } = null!;
 
-                return configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-            }
-            if ("Production" == env)
-            {
-                IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.{env}.json", optional: true)
-                    .Build();
+        public DbSet<Category> Categories { get; set; } = null!;
+        
+        public DbSet<SubCategory> SubCategories { get; set; } = null!;
+        
+        public DbSet<Order> Orders { get; set; } = null!;
+        
+        public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+        
+        public DbSet<Product> Products { get; set; } = null!;
+        
+        public DbSet<Image> Images { get; set; } = null!;
+        
+        public DbSet<Transaction> Transactions { get; set; } = null!;
+        
+        //public DbSet<AppUser> Users { get; set; } = null!;
 
-                return configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-            }
-
-            return string.Empty;    // For other environments, remove this line to configure.
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.UseSqlServer(GetConnectionString(), o =>
-            {
-                o.CommandTimeout(120);
-            });
-
+            
             // https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/simple-logging
             optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging()
@@ -60,6 +46,15 @@ namespace SoundStore.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName() ?? string.Empty;
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
+                }
+            }
         }
     }
 }

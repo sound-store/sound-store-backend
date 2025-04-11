@@ -7,13 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Entities\" />
 		<Folder Include="Models\Responses\" />
 		<Folder Include="Models\Requests\" />
-		<Folder Include="Enums\" />
-		<Folder Include="Constants\" />
 		<Folder Include="Exceptions\" />
 		<Folder Include="Services\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+	  <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.15" />
 	</ItemGroup>
 
 </Project>
