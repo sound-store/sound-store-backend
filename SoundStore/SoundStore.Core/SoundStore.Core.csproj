@@ -9,7 +9,6 @@
 	<ItemGroup>
 		<Folder Include="Models\Responses\" />
 		<Folder Include="Models\Requests\" />
-		<Folder Include="Exceptions\" />
 		<Folder Include="Services\" />
 	</ItemGroup>
 
