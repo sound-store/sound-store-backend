@@ -68,6 +68,8 @@ namespace SoundStore.Infrastructure
 
             #region Seed data
             builder.SeedUserRoles();
+            builder.SeedDataForCategory();
+            builder.SeedDataForSubCategory();
             #endregion
         }
     }

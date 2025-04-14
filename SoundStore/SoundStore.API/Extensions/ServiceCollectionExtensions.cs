@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using SoundStore.API.Middlewares;
 using SoundStore.Core.Commons;
 using System.Reflection;
 using System.Text.Json;
@@ -71,6 +72,8 @@ namespace SoundStore.API.Extensions
             #endregion
 
             #region App configurations
+            services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
             services.AddApiVersioning();
 
             services.AddCors();

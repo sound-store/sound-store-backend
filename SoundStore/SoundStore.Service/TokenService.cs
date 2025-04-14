@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SoundStore.Service
 {
-    public sealed class TokenService(IOptions<JwtSettings> options, string role)
+    public sealed class TokenService(IOptions<JwtSettings> options)
     {
         private readonly JwtSettings _options = options.Value;
 
@@ -25,7 +25,7 @@ namespace SoundStore.Service
                     new Claim(ClaimTypes.Name, user.FirstName ?? string.Empty),
                     new Claim(ClaimTypes.Surname, user.LastName ?? string.Empty),
                     new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                    new Claim(ClaimTypes.Role, role.ToString())
+                    //new Claim(ClaimTypes.Role, role.ToString())
                 ]),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 Issuer = _options.Issuer,

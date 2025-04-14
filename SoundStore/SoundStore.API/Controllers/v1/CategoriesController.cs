@@ -1,101 +1,165 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SoundStore.Core.Entities;
-using SoundStore.Infrastructure;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
+using SoundStore.Core.Commons;
+using SoundStore.Core.Models.Requests;
+using SoundStore.Core.Models.Responses;
+using SoundStore.Core.Services;
 
 namespace SoundStore.API.Controllers.v1
 {
     public class CategoriesController : BaseApiController
     {
-        private readonly SoundStoreDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(SoundStoreDbContext context)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
-        // GET: api/Categories
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        /// <summary>
+        /// Get all categories including subcategories
+        /// </summary>
+        /// <param name="pageNumer">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="name">Category's name</param>
+        /// <returns></returns>
+        [HttpGet("categories/pageNumber/{pageNumer}/pageSize/{pageSize}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public ActionResult<ApiResponse<PaginatedList<CategoryResponse>>> GetCategories(int pageNumer = 1,
+            int pageSize = 10, string? name = null)
         {
-            return await _context.Categories.ToListAsync();
-        }
-
-        // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
+            var categories = _categoryService.GetCategories(name, pageNumer, pageSize);
+            return Ok(new ApiResponse<PaginatedList<CategoryResponse>>
             {
-                return NotFound();
-            }
-
-            return category;
+                IsSuccess = true,
+                Message = "Fetch data successfully",
+                Value = categories
+            });
         }
 
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        /// <summary>
+        /// Get category by id
+        /// </summary>
+        /// <param name="id">Category's id</param>
+        /// <returns></returns>
+        [HttpGet("category/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<CategoryResponse>>> GetCategory(int id)
         {
-            if (id != category.Id)
-            {
-                return BadRequest();
-            }
+            var category = await _categoryService.GetCategory(id);
 
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
+            return Ok(new ApiResponse<CategoryResponse>
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+                IsSuccess = true,
+                Message = "Fetch data successfully",
+                Value = category
+            });
         }
 
-        // POST: api/Categories
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        /// <summary>
+        /// Update category by id
+        /// </summary>
+        /// <param name="id">Category's id</param>
+        /// <param name="request">Updated request model</param>
+        /// <returns></returns>
+        [HttpPut("category/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> UpdateCategory(int id, CategoryUpdatedRequest request)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
-        }
-
-        // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var result = await _categoryService.UpdateCategory(id, request.Name);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
             {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                IsSuccess = true,
+                Message = "Update category successfully"
+            });
         }
 
-        private bool CategoryExists(int id)
+        /// <summary>
+        /// Create a new category
+        /// </summary>
+        /// <param name="request">Category's name</param>
+        /// <returns></returns>
+        [HttpPost("category")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> CreateCategory(CategoryCreatedRequest request)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            var result = await _categoryService.AddCategory(request.Name);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Create category successfully"
+            });
+        }
+
+        /// <summary>
+        /// Delete category by id
+        /// </summary>
+        /// <param name="id">Category's id</param>
+        /// <returns></returns>
+        [HttpDelete("category/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> DeleteCategory(int id)
+        {
+            var result = await _categoryService.DeleteCategory(id);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Delete category successfully"
+            });
+        }
+        
+        [HttpPost("category/{id}/sub-category")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> CreateSubCategory(int id, SubCategoryCreatedRequest request)
+        {
+            var result = await _categoryService.AddSubCategory(id, request.Name);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Create sub category successfully"
+            });
+        }
+
+        [HttpDelete("sub-category/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> DeleteSubCategory(int id)
+        {
+            var result = await _categoryService.DeleteSubCategory(id);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Delete sub category successfully"
+            });
+        }
+
+        [HttpPut("sub-category/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> UpdateSubCategory(int id, SubCategoryUpdatedRequest request)
+        {
+            var result = await _categoryService.UpdateSubCategory(id, request.Name, request.CategoryId);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Update sub category successfully"
+            });
         }
     }
 }

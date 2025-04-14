@@ -17,7 +17,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 
-app.UseSwaggerUI();
+app.UseSwaggerUI(o =>
+{
+    o.SwaggerEndpoint("/swagger/v1/swagger.json", "Sound Store v1");
+});
 
 app.UseHttpsRedirection();
 

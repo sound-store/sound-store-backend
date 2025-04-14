@@ -29,6 +29,8 @@ namespace SoundStore.API.Middlewares
         /// <returns>A task that represents the completion of writing the response.</returns>
         private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             var statusCode = HttpStatusCode.InternalServerError;
             switch (ex)
             {
@@ -61,7 +63,7 @@ namespace SoundStore.API.Middlewares
             var result = new ErrorResponse
             {
                 Message = ex.Message,
-                Details = ex.StackTrace,
+                Details = env == "Development" ? ex.StackTrace : null,
             };
 
             return context.Response.WriteAsJsonAsync(result);
