@@ -70,6 +70,8 @@ namespace SoundStore.Infrastructure
             builder.SeedUserRoles();
             builder.SeedDataForCategory();
             builder.SeedDataForSubCategory();
+            builder.SeedDataForProduct();
+            builder.SeedDataForImage();
             #endregion
         }
     }
