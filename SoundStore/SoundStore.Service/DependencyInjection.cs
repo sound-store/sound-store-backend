@@ -17,6 +17,7 @@ namespace SoundStore.Service
 
             services.AddScoped<ICategoryService, CategorySerivce>();
 
+            services.AddScoped<IProductService, ProductService>();
             return services;
         }
     }

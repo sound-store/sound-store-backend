@@ -7,7 +7,7 @@ using SoundStore.Infrastructure.Data;
 
 namespace SoundStore.Infrastructure
 {
-    public class SoundStoreDbContext : IdentityDbContext
+    public class SoundStoreDbContext : IdentityDbContext<AppUser>
     {
         public SoundStoreDbContext()
         {
