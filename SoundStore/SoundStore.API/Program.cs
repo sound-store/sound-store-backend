@@ -28,9 +28,11 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseCors("AllowAll");
+app.UseMiddleware<UserClaimsMiddleware>();
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
+app.UseCors("AllowAll");
 
 app.MapControllers();
 

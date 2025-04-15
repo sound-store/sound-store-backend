@@ -18,6 +18,11 @@ namespace SoundStore.Service
             services.AddScoped<ICategoryService, CategorySerivce>();
 
             services.AddScoped<IProductService, ProductService>();
+
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped(typeof(UserClaimsService));
+
             return services;
         }
     }

@@ -12,7 +12,7 @@ namespace SoundStore.Service
     {
         private readonly JwtSettings _options = options.Value;
 
-        public string GenerateToken(AppUser user)
+        public string GenerateToken(AppUser user, string role)
         {
             var key = Encoding.ASCII.GetBytes(_options.Key);
             var securityKey = new SymmetricSecurityKey(key);
@@ -25,7 +25,7 @@ namespace SoundStore.Service
                     new Claim(ClaimTypes.Name, user.FirstName ?? string.Empty),
                     new Claim(ClaimTypes.Surname, user.LastName ?? string.Empty),
                     new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                    //new Claim(ClaimTypes.Role, role.ToString())
+                    new Claim(ClaimTypes.Role, role.ToString())
                 ]),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 Issuer = _options.Issuer,

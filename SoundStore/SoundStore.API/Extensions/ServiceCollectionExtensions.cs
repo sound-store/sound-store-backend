@@ -1,9 +1,13 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SoundStore.API.Middlewares;
 using SoundStore.Core.Commons;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -22,6 +26,8 @@ namespace SoundStore.API.Extensions
             });
 
             services.AddEndpointsApiExplorer();
+
+            services.AddHttpContextAccessor();
 
             services.AddSwaggerGen(o =>
             {
@@ -71,14 +77,18 @@ namespace SoundStore.API.Extensions
             services.Configure<JwtSettings>(configuration.GetRequiredSection("Jwt"));
             #endregion
 
+
+            var jwtSection = configuration.GetRequiredSection("Jwt");
             #region App configurations
             services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
+            services.AddScoped<UserClaimsMiddleware>();
 
             services.AddApiVersioning();
 
             services.AddCors();
 
-            services.ConfigureAuthentication();
+            services.ConfigureAuthentication(jwtSection);
             #endregion
 
             return services;
@@ -119,10 +129,34 @@ namespace SoundStore.API.Extensions
             return services;
         }
 
-        private static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+        private static IServiceCollection ConfigureAuthentication(this IServiceCollection services, 
+            IConfigurationSection jwtSection)
         {
             // Add authentication and authorization services here
             // Example: services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => { ... });
+
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
+            {
+                var configKey = jwtSection["Key"] ?? string.Empty;
+                var key = Encoding.UTF8.GetBytes(configKey);
+
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidIssuer = jwtSection["Issuer"],
+                    ValidAudience = jwtSection["Audience"]
+                };
+            });
+
             return services;
         }
     }

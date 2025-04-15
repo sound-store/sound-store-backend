@@ -17,7 +17,7 @@ namespace SoundStore.Infrastructure
         {
         }
 
-        public DbSet<AppUser> Users { get; set; } = null!;
+        public override DbSet<AppUser> Users { get; set; } = null!;
 
         public DbSet<Category> Categories { get; set; } = null!;
         
