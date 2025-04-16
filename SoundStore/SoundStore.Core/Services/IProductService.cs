@@ -13,6 +13,16 @@ namespace SoundStore.Core.Services
             string sortByPrice
         );
 
+        PaginatedList<ProductResponse> GetProductByCategory(int categoryId,
+            int pageSize,
+            int pageNumber);
+
+        PaginatedList<ProductResponse> GetProductBySubCategory(int subCategoryId,
+            int pageNumber,
+            int pageSize);
+
+        Task<ProductResponse?> GetProduct(long id);
+
         Task<bool> AddProduct();
 
         Task<bool> UpdateProduct();

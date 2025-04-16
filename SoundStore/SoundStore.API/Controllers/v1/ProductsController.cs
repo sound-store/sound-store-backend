@@ -15,14 +15,21 @@ namespace SoundStore.API.Controllers.v1
         private readonly SoundStoreDbContext _context;
         private readonly IProductService _productService;
 
-        public ProductsController(SoundStoreDbContext context, 
+        public ProductsController(SoundStoreDbContext context,
             IProductService productService)
         {
             _context = context;
             _productService = productService;
         }
 
-        
+        /// <summary>
+        /// Get products with pagination
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="parameters"></param>
+        /// <param name="sortByPrice"></param>
+        /// <returns></returns>
         [HttpGet("products/pageNumber/{pageNumber}/pageSize/{pageSize}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -43,81 +50,120 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
-        // GET: api/Products/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Product>> GetProduct(long id)
-        //{
-        //    var product = await _context.Products.FindAsync(id);
-
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return product;
-        //}
-
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutProduct(long id, Product product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(product).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ProductExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Product>> PostProduct(Product product)
-        //{
-        //    _context.Products.Add(product);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetProduct", new { id = product.Id }, product);
-        //}
-
-        // DELETE: api/Products/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteProduct(long id)
-        //{
-        //    var product = await _context.Products.FindAsync(id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Products.Remove(product);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        private bool ProductExists(long id)
+        /// <summary>
+        /// Get products by category with pagination
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet("products/category/{id}/pageNumber/{pageNumber}/pageSize/{pageSize}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public ActionResult<PaginatedList<ProductResponse>> GetProductByCategory(
+            int id,
+            int pageNumber = 1,
+            int pageSize = 10
+        )
         {
-            return _context.Products.Any(e => e.Id == id);
+            var result = _productService.GetProductByCategory(id, pageSize, pageNumber);
+            return Ok(new ApiResponse<PaginatedList<ProductResponse>>
+            {
+                IsSuccess = true,
+                Message = "Fetch products successfully",
+                Value = result
+            });
+        }
+
+        /// <summary>
+        /// Get products by subcategory with pagination
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet("products/sub-category/{id}/pageNumber/{pageNumber}/pageSize/{pageSize}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public ActionResult<PaginatedList<ProductResponse>> GetProductBySubCategory(
+            int id,
+            int pageNumber = 1,
+            int pageSize = 10
+        )
+        {
+            var result = _productService.GetProductBySubCategory(id, pageSize, pageNumber);
+            return Ok(new ApiResponse<PaginatedList<ProductResponse>>
+            {
+                IsSuccess = true,
+                Message = "Fetch products successfully",
+                Value = result
+            });
+        }
+
+
+        [HttpGet("products/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<ProductResponse>>> GetProduct(long id)
+        {
+            var product = await _productService.GetProduct(id);
+            return new ApiResponse<ProductResponse>
+            {
+                IsSuccess = true,
+                Message = "Fetch product successfully",
+                Value = product
+            };
+        }
+
+        [HttpPut("product/{id}")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<string>> UpdateProduct(long id, Product product)
+        {
+            var result = await _productService.UpdateProduct();
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Update product successfully",
+            });
+        }
+
+        [HttpPost("product")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<string>>> AddProduct(Product product)
+        {
+            var result = await _productService.AddProduct();
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Add product successfully",
+            });
+        }
+
+
+        [HttpDelete("product/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<string>> DeleteProduct(long id)
+        {
+            var result = await _productService.DeleteProduct();
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
+            {
+                IsSuccess = true,
+                Message = "Delete product successfully",
+            });
         }
     }
 }

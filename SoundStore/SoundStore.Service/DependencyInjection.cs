@@ -21,6 +21,8 @@ namespace SoundStore.Service
 
             services.AddScoped<IUserService, UserService>();
 
+            services.AddScoped<IProductRatingService, ProductRatingService>();
+
             services.AddScoped(typeof(UserClaimsService));
 
             return services;

@@ -33,7 +33,7 @@ namespace SoundStore.Infrastructure
         
         public DbSet<Transaction> Transactions { get; set; } = null!;
         
-        //public DbSet<AppUser> Users { get; set; } = null!;
+        public DbSet<Rating> Ratings { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

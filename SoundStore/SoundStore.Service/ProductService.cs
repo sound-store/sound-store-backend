@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SoundStore.Core;
 using SoundStore.Core.Commons;
 using SoundStore.Core.Entities;
+using SoundStore.Core.Enums;
 using SoundStore.Core.Exceptions;
 using SoundStore.Core.Models.Filters;
 using SoundStore.Core.Models.Responses;
@@ -42,19 +43,42 @@ namespace SoundStore.Service
             string sortByPrice)
         {
             var productRepository = _unitOfWork.GetRepository<Product>();
-            // TODO: Đối với user và Customer thì k lấy field status của product
             if (parameters is not null)
             {
                 var products = productRepository.GetAll()
                     .AsNoTracking()
                     .Include(p => p.SubCategory)
                     .Include(p => p.SubCategory.Category)
-                    .Include(p => p.Images);
+                    .Include(p => p.Images)
+                    .AsQueryable();
 
-                var filteredQuery = products.ApplyFilters(parameters);
-                if (!filteredQuery.Any())
-                    throw new NoDataRetrievalException("No products found.");
-                var result = filteredQuery.Select(p => new ProductResponse
+                // Filter by product's state
+                if (!string.IsNullOrEmpty(parameters.Status) 
+                    && Enum.TryParse<ProductState>(parameters.Status, out var productState))
+                {
+                    products = products.Where(p => p.Status == productState);
+                }
+                else
+                {
+                    products = products.Where(p => p.Status == ProductState.InStock);
+                }
+                // Filter by other parameters
+                if (!string.IsNullOrEmpty(parameters.Name))
+                {
+                    products = products.Where(p => p.Name.Contains(parameters.Name, StringComparison.OrdinalIgnoreCase));
+                }
+                if (!string.IsNullOrEmpty(parameters.Name) && parameters.CategoryId.HasValue)
+                {
+                    products = products.Where(p => p.Name.Contains(parameters.Name, StringComparison.OrdinalIgnoreCase)
+                        && p.SubCategory.Category.Id == parameters.CategoryId);
+                }
+                if (!string.IsNullOrEmpty(parameters.Name) && parameters.SubCategoryId.HasValue)
+                {
+                    products = products.Where(p => p.SubCategory.Id == parameters.SubCategoryId);
+                }
+
+                if (!products.Any()) throw new NoDataRetrievalException("No products found.");
+                var result = products.Select(p => new ProductResponse
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -79,7 +103,7 @@ namespace SoundStore.Service
                         ImageUrl = i.Url
                     }).ToList()
                 });
-                
+
                 if (!string.IsNullOrEmpty(sortByPrice))
                 {
                     if ("asc" == sortByPrice.ToLower().Trim())
@@ -96,6 +120,7 @@ namespace SoundStore.Service
                     .Include(p => p.SubCategory)
                     .Include(p => p.SubCategory.Category)
                     .Include(p => p.Images)
+                    .Where(p => p.Status == ProductState.InStock)
                     .Select(p => new ProductResponse
                     {
                         Id = p.Id,
@@ -136,10 +161,134 @@ namespace SoundStore.Service
                 return response;
             }
         }
+
+        public PaginatedList<ProductResponse> GetProductByCategory(int categoryId,
+            int pageSize,
+            int pageNumber)
+        {
+            var productRepository = _unitOfWork.GetRepository<Product>();
+            var products = productRepository.GetAll()
+                .AsNoTracking()
+                .Include(p => p.SubCategory)
+                .Include(p => p.SubCategory.Category)
+                .Include(p => p.Images)
+                .Where(p => p.Status == ProductState.InStock
+                            && p.SubCategory.Category.Id == categoryId)
+                .Select(p => new ProductResponse
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    StockQuantity = p.StockQuantity,
+                    Price = p.Price,
+                    Type = p.Type,
+                    Connectivity = p.Connectivity,
+                    SpecialFeatures = p.SpecialFeatures,
+                    FrequencyResponse = p.FrequencyResponse,
+                    Sensitivity = p.Sensitivity,
+                    BatteryLife = p.BatteryLife,
+                    AccessoriesIncluded = p.AccessoriesIncluded,
+                    Warranty = p.Warranty,
+                    SubCategoryId = p.SubCategoryId,
+                    SubCategoryName = p.SubCategory.Name,
+                    CategoryId = p.SubCategory.Category.Id,
+                    CategoryName = p.SubCategory.Category.Name,
+                    Status = p.Status.ToString(),
+                    Images = p.Images.Select(i => new ProductImage
+                    {
+                        ImageUrl = i.Url
+                    }).ToList()
+                }).AsQueryable();
+
+            if (!products.Any())
+                throw new NoDataRetrievalException("No products found.");
+            return PaginationHelper.CreatePaginatedList(products, pageNumber, pageSize);
+        }
         
         public Task<bool> UpdateProduct()
         {
             throw new NotImplementedException();
+        }
+
+        public PaginatedList<ProductResponse> GetProductBySubCategory(int subCategoryId, 
+            int pageNumber, 
+            int pageSize)
+        {
+            var productRepository = _unitOfWork.GetRepository<Product>();
+            var products = productRepository.GetAll()
+                .AsNoTracking()
+                .Include(p => p.SubCategory)
+                .Include(p => p.SubCategory.Category)
+                .Include(p => p.Images)
+                .Where(p => p.Status == ProductState.InStock
+                            && p.SubCategoryId == subCategoryId)
+                .Select(p => new ProductResponse
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    StockQuantity = p.StockQuantity,
+                    Price = p.Price,
+                    Type = p.Type,
+                    Connectivity = p.Connectivity,
+                    SpecialFeatures = p.SpecialFeatures,
+                    FrequencyResponse = p.FrequencyResponse,
+                    Sensitivity = p.Sensitivity,
+                    BatteryLife = p.BatteryLife,
+                    AccessoriesIncluded = p.AccessoriesIncluded,
+                    Warranty = p.Warranty,
+                    SubCategoryId = p.SubCategoryId,
+                    SubCategoryName = p.SubCategory.Name,
+                    CategoryId = p.SubCategory.Category.Id,
+                    CategoryName = p.SubCategory.Category.Name,
+                    Status = p.Status.ToString(),
+                    Images = p.Images.Select(i => new ProductImage
+                    {
+                        ImageUrl = i.Url
+                    }).ToList()
+                }).AsQueryable();
+
+            if (!products.Any())
+                throw new NoDataRetrievalException("No products found.");
+            return PaginationHelper.CreatePaginatedList(products, pageNumber, pageSize);
+        }
+
+        public async Task<ProductResponse?> GetProduct(long id)
+        {
+            var productRepository = _unitOfWork.GetRepository<Product>();
+            var product = await productRepository.GetAll()
+                .AsNoTracking()
+                .Include(p => p.SubCategory)
+                .Include(p => p.SubCategory.Category)
+                .Include(p => p.Images)
+                .Where(p => p.Id == id)
+                .Select(p => new ProductResponse
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    StockQuantity = p.StockQuantity,
+                    Price = p.Price,
+                    Type = p.Type,
+                    Connectivity = p.Connectivity,
+                    SpecialFeatures = p.SpecialFeatures,
+                    FrequencyResponse = p.FrequencyResponse,
+                    Sensitivity = p.Sensitivity,
+                    BatteryLife = p.BatteryLife,
+                    AccessoriesIncluded = p.AccessoriesIncluded,
+                    Warranty = p.Warranty,
+                    SubCategoryId = p.SubCategoryId,
+                    SubCategoryName = p.SubCategory.Name,
+                    CategoryId = p.SubCategory.Category.Id,
+                    CategoryName = p.SubCategory.Category.Name,
+                    Status = p.Status.ToString(),
+                    Images = p.Images.Select(i => new ProductImage
+                    {
+                        ImageUrl = i.Url
+                    }).ToList()
+                }).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("No product found!");
+            
+            return product;
         }
     }
 }
