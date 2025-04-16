@@ -17,20 +17,24 @@ namespace SoundStore.Service
             var key = Encoding.ASCII.GetBytes(_options.Key);
             var securityKey = new SymmetricSecurityKey(key);
 
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, user.FirstName ?? string.Empty),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.LastName ?? string.Empty),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+                new Claim(ClaimTypes.Role, role)
+            };
+            var claimsDictionary = claims.ToDictionary(claim => claim.Type, claim => (object)claim.Value);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(
-                [
-                    new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.FirstName ?? string.Empty),
-                    new Claim(ClaimTypes.Surname, user.LastName ?? string.Empty),
-                    new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                    new Claim(ClaimTypes.Role, role.ToString())
-                ]),
+                Claims = claimsDictionary,
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 Issuer = _options.Issuer,
                 Audience = _options.Audience,
-                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(securityKey, 
+                    SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);

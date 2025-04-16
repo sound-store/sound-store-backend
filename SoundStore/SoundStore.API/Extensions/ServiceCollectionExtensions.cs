@@ -129,7 +129,7 @@ namespace SoundStore.API.Extensions
             return services;
         }
 
-        private static IServiceCollection ConfigureAuthentication(this IServiceCollection services, 
+        private static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
             IConfigurationSection jwtSection)
         {
             // Add authentication and authorization services here

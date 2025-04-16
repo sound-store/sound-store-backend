@@ -19,7 +19,7 @@ app.UseSwagger();
 
 app.UseSwaggerUI(o =>
 {
-    o.SwaggerEndpoint("/swagger/v1/swagger.json", "Sound Store v1");
+    o.SwaggerEndpoint("/swagger/v1/swagger.json", "SoundStore v1");
 });
 
 app.UseHttpsRedirection();

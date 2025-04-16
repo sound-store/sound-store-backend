@@ -22,7 +22,9 @@ namespace SoundStore.Infrastructure
                 });
             });
 
-            services.AddIdentity<AppUser, IdentityRole>()
+            // AddIdentityCore: Adds only the core parts of the Identity system
+            services.AddIdentityCore<AppUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<SoundStoreDbContext>()
                 .AddDefaultTokenProviders();
 

@@ -9,7 +9,7 @@ using SoundStore.Core.Exceptions;
 using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Models.Responses;
 using SoundStore.Core.Services;
-using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace SoundStore.Service
 {
@@ -25,15 +25,15 @@ namespace SoundStore.Service
         private readonly TokenService _tokenService = tokenService;
         private readonly UserClaimsService _userClaimsService = userClaimsService;
 
-        public async Task<LoginResponse?> GetProfile()
+        public async Task<LoginResponse?> GetUserInfoBasedOnToken()
         {
-            var userId = _userClaimsService.GetClaim(UserClaims.PrimarySId);
+            var userId = _userClaimsService.GetClaim(JwtRegisteredClaimNames.Sid);
             if (string.IsNullOrEmpty(userId))
                 throw new UnauthorizedAccessException("User is not authenticated!");
 
             var user = await _userManager.FindByIdAsync(userId)
                 ?? throw new KeyNotFoundException("User does not exist!");
-            var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault() 
+            var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault()
                 ?? throw new KeyNotFoundException("User's role does not exist!");
 
             return new LoginResponse
@@ -60,10 +60,10 @@ namespace SoundStore.Service
                 if (!isValidPassword)
                     throw new KeyNotFoundException("Incorrect password!");
 
-                var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault() 
+                var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault()
                     ?? string.Empty;
                 var token = _tokenService.GenerateToken(user, role);
-                
+
                 return new LoginResponse
                 {
                     Id = user.Id,
@@ -89,7 +89,7 @@ namespace SoundStore.Service
             try
             {
                 var userRepository = _unitOfWork.GetRepository<AppUser>();
-                
+
                 if (user.Password != user.ConfirmPassword)
                     throw new ArgumentException("Password and confirm password do not match!");
                 if (user is null)
@@ -114,7 +114,7 @@ namespace SoundStore.Service
                     Status = UserState.Actived,
                 };
 
-                var addUserResult = await _userManager.CreateAsync(newUser, user.Password 
+                var addUserResult = await _userManager.CreateAsync(newUser, user.Password
                     ?? string.Empty);
                 if (!addUserResult.Succeeded)
                     throw new Exception("User registration failed!");

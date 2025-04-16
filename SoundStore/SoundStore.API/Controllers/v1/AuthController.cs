@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SoundStore.Core.Commons;
 using SoundStore.Core.Constants;
@@ -36,6 +37,7 @@ namespace SoundStore.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion(1)]
+        [AllowAnonymous]
         public async Task<ActionResult<ApiResponse<LoginResponse>>> Login(
             [FromBody] Microsoft.AspNetCore.Identity.Data.LoginRequest value
         )
@@ -59,6 +61,7 @@ namespace SoundStore.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [MapToApiVersion(1)]
+        [AllowAnonymous]
         public async Task<ActionResult<ApiResponse<string>>> Register([FromBody] UserRegistration value)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -70,14 +73,19 @@ namespace SoundStore.API.Controllers.v1
                 Message = "User registered successfully!",
             });
         }
-        
+
+        /// <summary>
+        /// Get user information based on token
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("users/me")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion(1)]
-        public async Task<ActionResult<LoginResponse>> GetProfile()
+        public async Task<ActionResult<LoginResponse>> GetUserInformationBasedOnToken()
         {
-            var response = await _userService.GetProfile();
+            var response = await _userService.GetUserInfoBasedOnToken();
             return Ok(new ApiResponse<LoginResponse>
             {
                 IsSuccess = true,

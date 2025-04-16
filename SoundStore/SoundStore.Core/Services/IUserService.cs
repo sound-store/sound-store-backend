@@ -7,7 +7,7 @@ namespace SoundStore.Core.Services
     {
         Task<LoginResponse?> Login(string email, string password);
 
-        Task<LoginResponse?> GetProfile();
+        Task<LoginResponse?> GetUserInfoBasedOnToken();
 
         Task<bool> RegisterUser(UserRegistration user);
     }
