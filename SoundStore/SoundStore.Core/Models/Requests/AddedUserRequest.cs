@@ -19,7 +19,7 @@ namespace SoundStore.Core.Models.Requests
         /// <summary>
         /// Default password
         /// </summary>
-        public string Password { get; set; } = "12345678@";
+        public string Password { get; set; } = "1234aBcD@";
 
         public string? Address { get; set; }
 

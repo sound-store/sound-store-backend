@@ -64,6 +64,7 @@ namespace SoundStore.Infrastructure
             new OrderDetailTypeConfig().Configure(builder.Entity<OrderDetail>());
             new TransactionTypeConfig().Configure(builder.Entity<Transaction>());
             new OrderTypeConfig().Configure(builder.Entity<Order>());
+            new RatingTypeConfiguration().Configure(builder.Entity<Rating>());
             #endregion
 
             #region Seed data

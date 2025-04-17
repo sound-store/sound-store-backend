@@ -14,5 +14,13 @@ namespace SoundStore.Core.Entities
         public int RatingPoint { get; set; }
 
         public string? Comment { get; set; }
+
+        public long ProductId { get; set; }
+
+        public string UserId { get; set; } = null!;
+
+        public AppUser User { get; set; } = null!;
+
+        public Product Product { get; set; } = null!;
     }
 }

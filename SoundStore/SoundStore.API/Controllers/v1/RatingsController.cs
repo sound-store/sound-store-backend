@@ -1,103 +1,69 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SoundStore.Core.Commons;
+using SoundStore.Core.Constants;
 using SoundStore.Core.Entities;
+using SoundStore.Core.Models.Requests;
+using SoundStore.Core.Models.Responses;
+using SoundStore.Core.Services;
 using SoundStore.Infrastructure;
 
 namespace SoundStore.API.Controllers.v1
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RatingsController : ControllerBase
+    public class RatingsController : BaseApiController
     {
         private readonly SoundStoreDbContext _context;
+        private readonly IProductRatingService _productRatingService;
 
-        public RatingsController(SoundStoreDbContext context)
+        public RatingsController(SoundStoreDbContext context, 
+            IProductRatingService productRatingService)
         {
             _context = context;
+            _productRatingService = productRatingService;
         }
 
-        // GET: api/Ratings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rating>>> GetRatings()
+        /// <summary>
+        /// Get rating of a product
+        /// </summary>
+        /// <param name="id">Product's id</param>
+        /// <returns></returns>
+        [HttpGet("products/{id}/ratings")]
+        [MapToApiVersion(1)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse<ProductRatingResponse>>> GetRatingOfAProduct(long id)
         {
-            return await _context.Ratings.ToListAsync();
-        }
-
-        // GET: api/Ratings/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Rating>> GetRating(long id)
-        {
-            var rating = await _context.Ratings.FindAsync(id);
-
-            if (rating == null)
+            var response = await _productRatingService.GetRatingOfAProduct(id);
+            return Ok(new ApiResponse<ProductRatingResponse>
             {
-                return NotFound();
-            }
-
-            return rating;
+                IsSuccess = true,
+                Message = "Fetch product's rating successfully",
+                Value = response
+            });
         }
 
-        // PUT: api/Ratings/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRating(long id, Rating rating)
+        /// <summary>
+        /// Add rating of a proudct
+        /// </summary>
+        /// <param name="request">Model to create a rating</param>
+        /// <returns></returns>
+        [HttpPost("product/rating")]
+        [MapToApiVersion(1)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<string>> AddRating(ProductRatingRequest request)
         {
-            if (id != rating.Id)
+            var result = await _productRatingService.AddRating(request);
+            if (!result) return BadRequest();
+            return Ok(new ApiResponse<string>
             {
-                return BadRequest();
-            }
-
-            _context.Entry(rating).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RatingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Ratings
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Rating>> PostRating(Rating rating)
-        {
-            _context.Ratings.Add(rating);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRating", new { id = rating.Id }, rating);
-        }
-
-        // DELETE: api/Ratings/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRating(long id)
-        {
-            var rating = await _context.Ratings.FindAsync(id);
-            if (rating == null)
-            {
-                return NotFound();
-            }
-
-            _context.Ratings.Remove(rating);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool RatingExists(long id)
-        {
-            return _context.Ratings.Any(e => e.Id == id);
+                IsSuccess = true,
+                Message = "Add rating successfully!"
+            });
         }
     }
 }

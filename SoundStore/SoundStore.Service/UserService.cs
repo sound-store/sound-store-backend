@@ -35,15 +35,15 @@ namespace SoundStore.Service
                 if (request is null)
                     throw new ArgumentException("Invalid requested data!");
 
-                if (!string.Equals(request.Role, UserRoles.Admin, StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(request.Role, UserRoles.Customer, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(request.Role, UserRoles.Admin, StringComparison.OrdinalIgnoreCase) 
+                    && !string.Equals(request.Role, UserRoles.Customer, StringComparison.OrdinalIgnoreCase))
                 {
                     throw new ArgumentException("Invalid user's role!");
                 }
 
                 var isEmailDuplicate = await userRepository.GetAll()
                     .AsNoTracking()
-                    .AnyAsync(u => string.Equals(u.Email, request.Email, StringComparison.OrdinalIgnoreCase));
+                    .AnyAsync(u => string.Equals(u.Email, request.Email));
                 if (isEmailDuplicate) throw new DuplicatedException("Email has already existed!");
 
                 var user = new AppUser
@@ -52,6 +52,8 @@ namespace SoundStore.Service
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Email = request.Email,
+                    UserName = request.Email,
+                    NormalizedUserName = request.Email.ToUpper(),
                     Address = request.Address,
                     DateOfBirth = request.DateOfBirth,
                     Status = UserState.Actived,
@@ -59,7 +61,7 @@ namespace SoundStore.Service
                 var addedResult = await _userManager.CreateAsync(user, request.Password);
                 var addedRoleResult = await _userManager.AddToRoleAsync(user, request.Role);
 
-                if (addedResult.Succeeded || addedRoleResult.Succeeded)
+                if (!addedResult.Succeeded || !addedRoleResult.Succeeded)
                 {
                     throw new Exception("An error occurred when adding the user!");
                 }
@@ -120,13 +122,12 @@ namespace SoundStore.Service
             int pageNumber,
             int pageSize)
         {
-            var customers = (IQueryable<AppUser>)
-                await _userManager.GetUsersInRoleAsync(UserRoles.Customer);
+            var customers = await _userManager.GetUsersInRoleAsync(UserRoles.Customer);
             if (!customers.Any()) throw new NoDataRetrievalException("No customers found!");
             if (!string.IsNullOrEmpty(name))
             {
                 customers = customers.Where(c => c.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase)
-                    || c.LastName.Contains(name, StringComparison.OrdinalIgnoreCase));
+                    || c.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             var response = customers.Select(x => new CustomerInfoResponse
             {
@@ -136,7 +137,7 @@ namespace SoundStore.Service
                 Address = x.Address,
                 DateOfBirth = x.DateOfBirth,
                 Status = x.Status.ToString()
-            });
+            }).AsQueryable();
 
             return PaginationHelper.CreatePaginatedList(response, pageNumber, pageSize);
         }

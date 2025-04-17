@@ -13,6 +13,13 @@ namespace SoundStore.API.Controllers.v1
     {
         private readonly IUserService _userService = userService;
 
+        /// <summary>
+        /// Get customers with pagination (Admin)
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("customers/pageNumber/{pageNumber}/pageSize/{pageSize}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -31,7 +38,11 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
-        // GET api/<UsersController>/5
+        /// <summary>
+        /// Get customer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("customers/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -48,11 +59,16 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
+        /// <summary>
+        /// Register user (Admin)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [HttpPost("admin/user-registration")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion(1)]
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<string>> AddUser([FromBody] AddedUserRequest value)
         {
             var result = await _userService.AddUser(value);
@@ -63,6 +79,12 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
+        /// <summary>
+        /// Update customer's status
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         [HttpPatch("customer/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,6 +101,11 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
+        /// <summary>
+        /// Delete a customer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("customer/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
