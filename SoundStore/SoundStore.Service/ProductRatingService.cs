@@ -26,11 +26,20 @@ namespace SoundStore.Service
                     throw new UnauthorizedAccessException("Invalid user's token!");
 
                 var productRepository = _unitOfWork.GetRepository<Product>();
+                var orderRepository = _unitOfWork.GetRepository<Order>();
                 var product = await productRepository.GetAll()
                     .AsNoTracking()
                     .FirstOrDefaultAsync(p => p.Id == request.ProductId)
                         ?? throw new KeyNotFoundException("Product not found!");
-
+                // Check whether the user has bought the product yet
+                var isPurchased = await orderRepository.GetAll()
+                    .AsNoTracking()
+                    .Include(o => o.OrderDetails)
+                    .AnyAsync(o => o.UserId == currentUserId 
+                        && o.OrderDetails.Any(od => od.ProductId == request.ProductId));
+                if (!isPurchased)
+                    throw new Exception(@"Users cannot add the rating 
+                        because they haven't bought the product yet!");
                 product.Ratings.Add(new Rating
                 {
                     ProductId = request.ProductId,
@@ -58,7 +67,7 @@ namespace SoundStore.Service
                 {
                     ProductId = p.Id,
                     RatingPoint = (decimal)p.Ratings.Average(r => r.RatingPoint),
-                    Comment = p.Ratings.Select(r => r.Comment).ToList()
+                    Comment = p.Ratings.Select(r => r.Comment!).ToList()
                 }).FirstOrDefaultAsync() 
                     ?? throw new KeyNotFoundException("No rating data for this product!");
 

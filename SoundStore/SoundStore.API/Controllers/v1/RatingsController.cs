@@ -1,26 +1,20 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SoundStore.Core.Commons;
 using SoundStore.Core.Constants;
-using SoundStore.Core.Entities;
 using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Models.Responses;
 using SoundStore.Core.Services;
-using SoundStore.Infrastructure;
 
 namespace SoundStore.API.Controllers.v1
 {
     public class RatingsController : BaseApiController
     {
-        private readonly SoundStoreDbContext _context;
         private readonly IProductRatingService _productRatingService;
 
-        public RatingsController(SoundStoreDbContext context, 
-            IProductRatingService productRatingService)
+        public RatingsController(IProductRatingService productRatingService)
         {
-            _context = context;
             _productRatingService = productRatingService;
         }
 
