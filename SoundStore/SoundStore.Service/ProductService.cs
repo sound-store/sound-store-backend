@@ -48,7 +48,7 @@ namespace SoundStore.Service
                 var products = productRepository.GetAll()
                     .AsNoTracking()
                     .Include(p => p.SubCategory)
-                    .Include(p => p.SubCategory.Category)
+                    .Include(p => p.SubCategory!.Category)
                     .Include(p => p.Images)
                     .AsQueryable();
 
@@ -70,11 +70,11 @@ namespace SoundStore.Service
                 if (!string.IsNullOrEmpty(parameters.Name) && parameters.CategoryId.HasValue)
                 {
                     products = products.Where(p => p.Name.Contains(parameters.Name, StringComparison.OrdinalIgnoreCase)
-                        && p.SubCategory.Category.Id == parameters.CategoryId);
+                        && p.SubCategory!.Category!.Id == parameters.CategoryId);
                 }
                 if (!string.IsNullOrEmpty(parameters.Name) && parameters.SubCategoryId.HasValue)
                 {
-                    products = products.Where(p => p.SubCategory.Id == parameters.SubCategoryId);
+                    products = products.Where(p => p.SubCategory!.Id == parameters.SubCategoryId);
                 }
 
                 if (!products.Any()) throw new NoDataRetrievalException("No products found.");
@@ -94,8 +94,8 @@ namespace SoundStore.Service
                     AccessoriesIncluded = p.AccessoriesIncluded,
                     Warranty = p.Warranty,
                     SubCategoryId = p.SubCategoryId,
-                    SubCategoryName = p.SubCategory.Name,
-                    CategoryId = p.SubCategory.Category.Id,
+                    SubCategoryName = p.SubCategory!.Name,
+                    CategoryId = p.SubCategory.Category!.Id,
                     CategoryName = p.SubCategory.Category.Name,
                     Status = p.Status.ToString(),
                     Images = p.Images.Select(i => new ProductImage
@@ -118,7 +118,7 @@ namespace SoundStore.Service
                 var products = productRepository.GetAll()
                     .AsNoTracking()
                     .Include(p => p.SubCategory)
-                    .Include(p => p.SubCategory.Category)
+                    .Include(p => p.SubCategory!.Category)
                     .Include(p => p.Images)
                     .Where(p => p.Status == ProductState.InStock)
                     .Select(p => new ProductResponse
@@ -137,8 +137,8 @@ namespace SoundStore.Service
                         AccessoriesIncluded = p.AccessoriesIncluded,
                         Warranty = p.Warranty,
                         SubCategoryId = p.SubCategoryId,
-                        SubCategoryName = p.SubCategory.Name,
-                        CategoryId = p.SubCategory.Category.Id,
+                        SubCategoryName = p.SubCategory!.Name,
+                        CategoryId = p.SubCategory.Category!.Id,
                         CategoryName = p.SubCategory.Category.Name,
                         Status = p.Status.ToString(),
                         Images = p.Images.Select(i => new ProductImage
@@ -170,10 +170,10 @@ namespace SoundStore.Service
             var products = productRepository.GetAll()
                 .AsNoTracking()
                 .Include(p => p.SubCategory)
-                .Include(p => p.SubCategory.Category)
+                .Include(p => p.SubCategory!.Category)
                 .Include(p => p.Images)
                 .Where(p => p.Status == ProductState.InStock
-                            && p.SubCategory.Category.Id == categoryId)
+                            && p.SubCategory!.Category!.Id == categoryId)
                 .Select(p => new ProductResponse
                 {
                     Id = p.Id,
@@ -190,8 +190,8 @@ namespace SoundStore.Service
                     AccessoriesIncluded = p.AccessoriesIncluded,
                     Warranty = p.Warranty,
                     SubCategoryId = p.SubCategoryId,
-                    SubCategoryName = p.SubCategory.Name,
-                    CategoryId = p.SubCategory.Category.Id,
+                    SubCategoryName = p.SubCategory!.Name,
+                    CategoryId = p.SubCategory.Category!.Id,
                     CategoryName = p.SubCategory.Category.Name,
                     Status = p.Status.ToString(),
                     Images = p.Images.Select(i => new ProductImage
@@ -218,7 +218,7 @@ namespace SoundStore.Service
             var products = productRepository.GetAll()
                 .AsNoTracking()
                 .Include(p => p.SubCategory)
-                .Include(p => p.SubCategory.Category)
+                .Include(p => p.SubCategory!.Category)
                 .Include(p => p.Images)
                 .Where(p => p.Status == ProductState.InStock
                             && p.SubCategoryId == subCategoryId)
@@ -238,8 +238,8 @@ namespace SoundStore.Service
                     AccessoriesIncluded = p.AccessoriesIncluded,
                     Warranty = p.Warranty,
                     SubCategoryId = p.SubCategoryId,
-                    SubCategoryName = p.SubCategory.Name,
-                    CategoryId = p.SubCategory.Category.Id,
+                    SubCategoryName = p.SubCategory!.Name,
+                    CategoryId = p.SubCategory.Category!.Id,
                     CategoryName = p.SubCategory.Category.Name,
                     Status = p.Status.ToString(),
                     Images = p.Images.Select(i => new ProductImage
@@ -259,7 +259,7 @@ namespace SoundStore.Service
             var product = await productRepository.GetAll()
                 .AsNoTracking()
                 .Include(p => p.SubCategory)
-                .Include(p => p.SubCategory.Category)
+                .Include(p => p.SubCategory!.Category)
                 .Include(p => p.Images)
                 .Where(p => p.Id == id)
                 .Select(p => new ProductResponse
@@ -278,8 +278,8 @@ namespace SoundStore.Service
                     AccessoriesIncluded = p.AccessoriesIncluded,
                     Warranty = p.Warranty,
                     SubCategoryId = p.SubCategoryId,
-                    SubCategoryName = p.SubCategory.Name,
-                    CategoryId = p.SubCategory.Category.Id,
+                    SubCategoryName = p.SubCategory!.Name,
+                    CategoryId = p.SubCategory.Category!.Id,
                     CategoryName = p.SubCategory.Category.Name,
                     Status = p.Status.ToString(),
                     Images = p.Images.Select(i => new ProductImage

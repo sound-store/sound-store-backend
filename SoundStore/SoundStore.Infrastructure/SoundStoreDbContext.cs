@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SoundStore.Core.Entities;
 using SoundStore.Infrastructure.Configs;
@@ -20,29 +21,33 @@ namespace SoundStore.Infrastructure
         public override DbSet<AppUser> Users { get; set; } = null!;
 
         public DbSet<Category> Categories { get; set; } = null!;
-        
+
         public DbSet<SubCategory> SubCategories { get; set; } = null!;
-        
+
         public DbSet<Order> Orders { get; set; } = null!;
-        
+
         public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
-        
+
         public DbSet<Product> Products { get; set; } = null!;
-        
+
         public DbSet<Image> Images { get; set; } = null!;
-        
+
         public DbSet<Transaction> Transactions { get; set; } = null!;
-        
+
         public DbSet<Rating> Ratings { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             
-            // https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/simple-logging
-            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty;
+            if (env == "Development")
+            {
+                // https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/simple-logging
+                optionsBuilder//.LogTo(Console.WriteLine, LogLevel.Information)
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -71,8 +76,8 @@ namespace SoundStore.Infrastructure
             builder.SeedUserRoles();
             builder.SeedDataForCategory();
             builder.SeedDataForSubCategory();
-            builder.SeedDataForProduct();
-            builder.SeedDataForImage();
+            //builder.SeedDataForProduct();
+            //builder.SeedDataForImage();
             #endregion
         }
     }

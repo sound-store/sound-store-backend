@@ -25,6 +25,10 @@ namespace SoundStore.Service
 
             services.AddScoped(typeof(UserClaimsService));
 
+            services.AddScoped<IImageService, ImageService>();
+
+            services.AddScoped<IPaymentService, PaymentService>();
+
             return services;
         }
     }

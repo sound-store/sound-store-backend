@@ -75,6 +75,9 @@ namespace SoundStore.API.Extensions
 
             #region Add application variables
             services.Configure<JwtSettings>(configuration.GetRequiredSection("Jwt"));
+            services.Configure<EmailSettings>(configuration.GetRequiredSection("EmailSettings"));
+            services.Configure<CloudinarySettings>(configuration.GetRequiredSection("CloudinarySettings"));
+            services.Configure<PayOSSettings>(configuration.GetRequiredSection("payOS"));
             #endregion
 
 

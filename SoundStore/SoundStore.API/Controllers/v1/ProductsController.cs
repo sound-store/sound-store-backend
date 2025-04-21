@@ -41,7 +41,7 @@ namespace SoundStore.API.Controllers.v1
             [FromQuery] string? sortByPrice = null
         )
         {
-            var result = _productService.GetProducts(pageNumber, pageSize, parameters, sortByPrice);
+            var result = _productService.GetProducts(pageNumber, pageSize, parameters!, sortByPrice!);
             return Ok(new ApiResponse<PaginatedList<ProductResponse>>
             {
                 IsSuccess = true,

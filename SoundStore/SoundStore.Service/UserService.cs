@@ -126,8 +126,8 @@ namespace SoundStore.Service
             if (!customers.Any()) throw new NoDataRetrievalException("No customers found!");
             if (!string.IsNullOrEmpty(name))
             {
-                customers = customers.Where(c => c.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase)
-                    || c.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                customers = customers.Where(c => c.FirstName!.Contains(name, StringComparison.OrdinalIgnoreCase)
+                    || c.LastName!.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             var response = customers.Select(x => new CustomerInfoResponse
             {

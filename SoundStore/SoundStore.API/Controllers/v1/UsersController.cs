@@ -29,7 +29,7 @@ namespace SoundStore.API.Controllers.v1
             int pageSize,
             string? name = null)
         {
-            var customers = await _userService.GetCustomers(name, pageNumber, pageSize);
+            var customers = await _userService.GetCustomers(name!, pageNumber, pageSize);
             return Ok(new ApiResponse<PaginatedList<CustomerInfoResponse>>
             {
                 IsSuccess = true,
