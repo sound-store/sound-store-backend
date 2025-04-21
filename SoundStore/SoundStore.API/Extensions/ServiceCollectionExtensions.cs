@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SoundStore.API.Middlewares;
 using SoundStore.Core.Commons;
+using SoundStore.Core.Constants;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -93,7 +94,26 @@ namespace SoundStore.API.Extensions
 
             services.ConfigureAuthentication(jwtSection);
             #endregion
+            
+            #region Policy-based authorization
+            services.AddAuthorization(o =>
+            {
+                o.AddPolicy("Customer", p =>
+                {
+                    p.RequireRole(UserRoles.Customer);
+                });
 
+                o.AddPolicy("Admin", p =>
+                {
+                    p.RequireRole(UserRoles.Admin);
+                });
+
+                o.AddPolicy("CustomerAndAdmin", p =>
+                {
+                    p.RequireRole(UserRoles.Customer, UserRoles.Admin);
+                });
+            });
+            #endregion
             return services;
         }
 
