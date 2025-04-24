@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SoundStore.Core;
 using SoundStore.Core.Commons;
@@ -7,6 +6,7 @@ using SoundStore.Core.Entities;
 using SoundStore.Core.Enums;
 using SoundStore.Core.Exceptions;
 using SoundStore.Core.Models.Filters;
+using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Models.Responses;
 using SoundStore.Core.Services;
 using SoundStore.Infrastructure.Helpers;
@@ -14,26 +14,61 @@ using SoundStore.Infrastructure.Helpers;
 namespace SoundStore.Service
 {
     public class ProductService(IUnitOfWork unitOfWork,
-        ILogger<ProductService> logger) : IProductService
+        ILogger<ProductService> logger,
+        IImageService imageService) : IProductService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<ProductService> _logger = logger;
+        private readonly IImageService _imageService = imageService;
 
-        public Task<bool> AddProduct()
+        public async Task<bool> AddProduct(ProductCreatedRequest request)
         {
             try
             {
-                throw new NotImplementedException();
+                var productRepository = _unitOfWork.GetRepository<Product>();
+                var productImageRepository = _unitOfWork.GetRepository<Image>();
+                var isExisted = await productRepository.GetAll()
+                    .AsNoTracking()
+                    .AnyAsync(p => p.Name.ToLower() == request.Name.ToLower());
+                if (isExisted) throw new DuplicatedException("Product has already existed!");
+
+                var product = new Product
+                {
+                    Name = request.Name,
+                    Description = request.Description,
+                    StockQuantity = request.StockQuantity,
+                    Price = request.Price,
+                    Type = request.Type,
+                    Connectivity = request.Connectivity,
+                    SpecialFeatures = request.SpecialFeatures,
+                    FrequencyResponse = request.FrequencyResponse,
+                    Sensitivity = request.Sensitivity,
+                    BatteryLife = request.BatteryLife,
+                    AccessoriesIncluded = request.AccessoriesIncluded,
+                    Warranty = request.Warranty,
+                    SubCategoryId = request.SubCategoryId,
+                    CreatedAt = DateTime.Now,
+                    Status = ProductState.InStock   // default state of the product
+                };
+                productRepository.Add(product);
+                foreach (var img in request.Images)
+                {
+                    var imgUrl = await _imageService.UploadImageAsync(img) ?? 
+                        throw new Exception("Cannot upload the image!");
+                    product.Images.Add(new Image
+                    {
+                        ProductId = product.Id,
+                        Url = imgUrl,
+                        CreatedAt = DateTime.Now
+                    });
+                }
+                return await _unitOfWork.SaveAsync() > 0;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex.StackTrace);
                 throw;
             }
-        }
-
-        public Task<bool> DeleteProduct()
-        {
             throw new NotImplementedException();
         }
 
@@ -53,7 +88,7 @@ namespace SoundStore.Service
                     .AsQueryable();
 
                 // Filter by product's state
-                if (!string.IsNullOrEmpty(parameters.Status) 
+                if (!string.IsNullOrEmpty(parameters.Status)
                     && Enum.TryParse<ProductState>(parameters.Status, out var productState))
                 {
                     products = products.Where(p => p.Status == productState);
@@ -204,14 +239,14 @@ namespace SoundStore.Service
                 throw new NoDataRetrievalException("No products found.");
             return PaginationHelper.CreatePaginatedList(products, pageNumber, pageSize);
         }
-        
+
         public Task<bool> UpdateProduct()
         {
             throw new NotImplementedException();
         }
 
-        public PaginatedList<ProductResponse> GetProductBySubCategory(int subCategoryId, 
-            int pageNumber, 
+        public PaginatedList<ProductResponse> GetProductBySubCategory(int subCategoryId,
+            int pageNumber,
             int pageSize)
         {
             var productRepository = _unitOfWork.GetRepository<Product>();
@@ -261,6 +296,7 @@ namespace SoundStore.Service
                 .Include(p => p.SubCategory)
                 .Include(p => p.SubCategory!.Category)
                 .Include(p => p.Images)
+                .Include(p => p.Ratings)
                 .Where(p => p.Id == id)
                 .Select(p => new ProductResponse
                 {
@@ -285,10 +321,40 @@ namespace SoundStore.Service
                     Images = p.Images.Select(i => new ProductImage
                     {
                         ImageUrl = i.Url
-                    }).ToList()
-                }).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("No product found!");
-            
+                    }).ToList(),
+                    OverallRatingScore = (decimal)p.Ratings.Average(r => r.RatingPoint),
+                    RatingResponses = p.Ratings.Select(r => new RatingResponse
+                    {
+                        UserName = r.User.FirstName + " " + r.User.LastName,
+                        RatingPoint = r.RatingPoint,
+                        Comment = r.Comment,
+                    }).ToList(),
+                }).FirstOrDefaultAsync() ?? 
+                    throw new KeyNotFoundException("No product found!");
             return product;
+        }
+
+        public async Task<bool> DeleteProduct(long productId)
+        {
+            try
+            {
+                var productRepository = _unitOfWork.GetRepository<Product>();
+                var product = await productRepository.GetAll()
+                    .AsNoTracking()
+                    .Include(p => p.OrderDetails)
+                    .FirstOrDefaultAsync(p => p.Id == productId)
+                    ?? throw new KeyNotFoundException("Product does not exist!");
+                if (product.OrderDetails.Any())
+                    throw new Exception("Cannot delete this product because it is used in OrderDetails!");
+
+                productRepository.Delete(product);
+                return await _unitOfWork.SaveAsync() > 0;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message, e.StackTrace);
+                throw;
+            }
         }
     }
 }

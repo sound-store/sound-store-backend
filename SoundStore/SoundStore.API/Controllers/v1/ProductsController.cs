@@ -1,25 +1,20 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SoundStore.Core.Commons;
 using SoundStore.Core.Entities;
 using SoundStore.Core.Models.Filters;
+using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Models.Responses;
 using SoundStore.Core.Services;
-using SoundStore.Infrastructure;
 
 namespace SoundStore.API.Controllers.v1
 {
     public class ProductsController : BaseApiController
     {
-        private readonly SoundStoreDbContext _context;
         private readonly IProductService _productService;
 
-        public ProductsController(SoundStoreDbContext context,
-            IProductService productService)
+        public ProductsController(IProductService productService)
         {
-            _context = context;
             _productService = productService;
         }
 
@@ -103,7 +98,11 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
-
+        /// <summary>
+        /// Get product by id
+        /// </summary>
+        /// <param name="id">Product's id</param>
+        /// <returns></returns>
         [HttpGet("products/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -119,6 +118,12 @@ namespace SoundStore.API.Controllers.v1
             };
         }
 
+        /// <summary>
+        /// Update the product
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [HttpPut("product/{id}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -134,15 +139,21 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
+        /// <summary>
+        /// Create product
+        /// </summary>
+        /// <param name="request">Product's data</param>
+        /// <returns></returns>
         [HttpPost("product")]
         //[Authorize(Roles = "")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [MapToApiVersion(1)]
-        public async Task<ActionResult<ApiResponse<string>>> AddProduct(Product product)
+        public async Task<ActionResult<ApiResponse<string>>> AddProduct([FromForm] ProductCreatedRequest request)
         {
-            var result = await _productService.AddProduct();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var result = await _productService.AddProduct(request);
             if (!result) return BadRequest();
             return Ok(new ApiResponse<string>
             {
@@ -151,7 +162,11 @@ namespace SoundStore.API.Controllers.v1
             });
         }
 
-
+        /// <summary>
+        /// Delete existing product
+        /// </summary>
+        /// <param name="id">Product's id</param>
+        /// <returns></returns>
         [HttpDelete("product/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -159,7 +174,7 @@ namespace SoundStore.API.Controllers.v1
         [MapToApiVersion(1)]
         public async Task<ActionResult<string>> DeleteProduct(long id)
         {
-            var result = await _productService.DeleteProduct();
+            var result = await _productService.DeleteProduct(id);
             if (!result) return BadRequest();
             return Ok(new ApiResponse<string>
             {

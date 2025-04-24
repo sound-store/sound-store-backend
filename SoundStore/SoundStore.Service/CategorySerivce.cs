@@ -53,7 +53,7 @@ namespace SoundStore.Service
                     .AsNoTracking()
                     .Any(c => c.Name.ToLower() == name.ToLower());
                 if (isDuplicate)
-                    throw new DuplicatedException("Sub category already exists!");  
+                    throw new DuplicatedException("Sub category already exists!");
 
                 var validCategory = await categoryRepository.GetAll()
                     .AsNoTracking()
@@ -165,6 +165,27 @@ namespace SoundStore.Service
             }
         }
 
+        public async Task<List<CategoryResponse>> GetCategories()
+        {
+            var categoryRepository = _unitOfWork.GetRepository<Category>();
+            var categories = await categoryRepository.GetAll()
+                .AsNoTracking()
+                .ToListAsync();
+            if (!categories.Any()) throw new NoDataRetrievalException("No data of categories!");
+
+            var response = new List<CategoryResponse>();
+            foreach (var category in categories)
+            {
+                var t = new CategoryResponse
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                };
+                response.Add(t);
+            }
+            return response;
+        }
+
         public async Task<CategoryResponse?> GetCategory(int id)
         {
             var categoryRepository = _unitOfWork.GetRepository<Category>();
@@ -220,13 +241,13 @@ namespace SoundStore.Service
             {
                 var category = _unitOfWork.GetRepository<Category>();
                 var subCategoryRepository = _unitOfWork.GetRepository<SubCategory>();
-                
+
                 var subCategory = await subCategoryRepository.GetAll()
                     .AsNoTracking()
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (subCategory is null)
                     throw new KeyNotFoundException("Sub category is not found!");
-                
+
                 var isExistedCategory = await category.GetAll()
                     .AsNoTracking()
                     .AnyAsync(c => c.Id == categoryId);

@@ -17,6 +17,25 @@ namespace SoundStore.API.Controllers.v1
         }
 
         /// <summary>
+        /// Get categories
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("categories")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion(1)]
+        public async Task<ActionResult<ApiResponse<List<CategoryResponse>>>> GetCategories()
+        {
+            var response = await _categoryService.GetCategories();
+            return Ok(new ApiResponse<List<CategoryResponse>>
+            {
+                IsSuccess = true,
+                Message = "Fetch category successfully!",
+                Value = response
+            });
+        }
+
+        /// <summary>
         /// Get all categories including subcategories
         /// </summary>
         /// <param name="pageNumer">Page number</param>
@@ -118,7 +137,7 @@ namespace SoundStore.API.Controllers.v1
                 Message = "Delete category successfully"
             });
         }
-        
+
         [HttpPost("category/{id}/sub-category")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [MapToApiVersion(1)]

@@ -5,6 +5,8 @@ namespace SoundStore.Core.Services
 {
     public interface ICategoryService
     {
+        Task<List<CategoryResponse>> GetCategories();
+
         PaginatedList<CategoryResponse> GetCategories(string? name, int pageNumber, int pageSize);
 
         Task<CategoryResponse?> GetCategory(int id);
