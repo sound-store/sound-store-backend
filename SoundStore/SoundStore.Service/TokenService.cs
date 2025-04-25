@@ -2,13 +2,14 @@
 using Microsoft.IdentityModel.Tokens;
 using SoundStore.Core.Commons;
 using SoundStore.Core.Entities;
+using SoundStore.Core.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace SoundStore.Service
 {
-    public sealed class TokenService(IOptions<JwtSettings> options)
+    public class TokenService(IOptions<JwtSettings> options) : ITokenService
     {
         private readonly JwtSettings _options = options.Value;
 

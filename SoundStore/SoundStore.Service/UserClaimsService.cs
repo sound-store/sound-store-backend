@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SoundStore.Core.Services;
 
 namespace SoundStore.Service
 {
-    public sealed class UserClaimsService(IHttpContextAccessor httpContextAccessor)
+    public class UserClaimsService(IHttpContextAccessor httpContextAccessor) : IUserClaimsService
     {
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 

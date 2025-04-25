@@ -18,14 +18,14 @@ namespace SoundStore.Service
     public class UserService(IUnitOfWork unitOfWork,
         ILogger<UserService> logger,
         UserManager<AppUser> userManager,
-        TokenService tokenService,
-        UserClaimsService userClaimsService) : IUserService
+        ITokenService tokenService,
+        IUserClaimsService userClaimsService) : IUserService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<UserService> _logger = logger;
         private readonly UserManager<AppUser> _userManager = userManager;
-        private readonly TokenService _tokenService = tokenService;
-        private readonly UserClaimsService _userClaimsService = userClaimsService;
+        private readonly ITokenService _tokenService = tokenService;
+        private readonly IUserClaimsService _userClaimsService = userClaimsService;
 
         public async Task<bool> AddUser(AddedUserRequest request)
         {

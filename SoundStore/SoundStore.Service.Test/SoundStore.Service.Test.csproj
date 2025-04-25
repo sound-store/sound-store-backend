@@ -19,6 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SoundStore.API\SoundStore.API.csproj" />
+    <ProjectReference Include="..\SoundStore.Core\SoundStore.Core.csproj" />
+    <ProjectReference Include="..\SoundStore.Infrastructure\SoundStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\SoundStore.Service\SoundStore.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
