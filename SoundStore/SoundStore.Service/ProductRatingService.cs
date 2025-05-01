@@ -11,11 +11,11 @@ namespace SoundStore.Service
 {
     public class ProductRatingService(IUnitOfWork unitOfWork,
         ILogger<ProductRatingService> logger,
-        UserClaimsService userClaimsService) : IProductRatingService
+        IUserClaimsService userClaimsService) : IProductRatingService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<ProductRatingService> _logger = logger;
-        private readonly UserClaimsService _userClaimsService = userClaimsService;
+        private readonly IUserClaimsService _userClaimsService = userClaimsService;
 
         public async Task<bool> AddRating(ProductRatingRequest request)
         {

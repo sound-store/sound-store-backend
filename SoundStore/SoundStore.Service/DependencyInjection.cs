@@ -13,7 +13,7 @@ namespace SoundStore.Service
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped(typeof(TokenService));
+            services.AddScoped(typeof(ITokenService), typeof(TokenService));
 
             services.AddScoped<ICategoryService, CategorySerivce>();
 
@@ -23,7 +23,7 @@ namespace SoundStore.Service
 
             services.AddScoped<IProductRatingService, ProductRatingService>();
 
-            services.AddScoped(typeof(UserClaimsService));
+            services.AddScoped(typeof(IUserClaimsService), typeof(UserClaimsService));
 
             services.AddScoped<IImageService, ImageService>();
 
