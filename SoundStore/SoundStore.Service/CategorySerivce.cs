@@ -16,7 +16,7 @@ namespace SoundStore.Service
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<CategorySerivce> _logger = logger;
 
-        public async Task<bool> AddCategory(string name)
+        public async Task<bool> AddCategory(string name, string description)
         {
             try
             {
@@ -30,6 +30,7 @@ namespace SoundStore.Service
                 var category = new Category
                 {
                     Name = name,
+                    Description = description,
                     CreatedAt = DateTime.Now,
                 };
                 categoryRepository.Add(category);
@@ -133,6 +134,9 @@ namespace SoundStore.Service
                     {
                         Id = c.Id,
                         Name = c.Name,
+                        Description = c.Description,
+                        CreatedAt = c.CreatedAt,
+                        UpdatedAt = c.UpdatedAt,
                         SubCategories = c.SubCategories.Select(sc => new SubCategoryResponse
                         {
                             Id = sc.Id,
@@ -196,6 +200,9 @@ namespace SoundStore.Service
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    Description = c.Description,
+                    CreatedAt = c.CreatedAt,
+                    UpdatedAt = c.UpdatedAt,
                     SubCategories = c.SubCategories.Select(sc => new SubCategoryResponse
                     {
                         Id = sc.Id,
@@ -211,7 +218,7 @@ namespace SoundStore.Service
             return category;
         }
 
-        public async Task<bool> UpdateCategory(int id, string name)
+        public async Task<bool> UpdateCategory(int id, string name, string description)
         {
             try
             {
@@ -223,6 +230,7 @@ namespace SoundStore.Service
                     throw new KeyNotFoundException("Category not found!");
 
                 category.Name = name;
+                category.Description = description;
                 category.UpdatedAt = DateTime.Now;
 
                 categoryRepository.Update(category);

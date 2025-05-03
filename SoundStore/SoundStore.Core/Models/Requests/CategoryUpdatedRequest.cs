@@ -6,5 +6,7 @@ namespace SoundStore.Core.Models.Requests
     {
         [Required(ErrorMessage = "Category name is required", AllowEmptyStrings = false)]
         public string Name { get; set; } = null!;
+
+        public string? Description { get; set; }
     }
 }

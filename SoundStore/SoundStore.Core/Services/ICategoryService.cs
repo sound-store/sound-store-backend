@@ -11,9 +11,9 @@ namespace SoundStore.Core.Services
 
         Task<CategoryResponse?> GetCategory(int id);
 
-        Task<bool> AddCategory(string name);
+        Task<bool> AddCategory(string name, string description);
 
-        Task<bool> UpdateCategory(int id, string name);
+        Task<bool> UpdateCategory(int id, string name, string description);
 
         /// <summary>
         /// Delete category by id

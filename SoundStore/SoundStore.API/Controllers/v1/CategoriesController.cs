@@ -38,18 +38,20 @@ namespace SoundStore.API.Controllers.v1
         /// <summary>
         /// Get all categories including subcategories
         /// </summary>
-        /// <param name="pageNumer">Page number</param>
+        /// <param name="pageNumber">Page number</param>
         /// <param name="pageSize">Page size</param>
         /// <param name="name">Category's name</param>
         /// <returns></returns>
-        [HttpGet("categories/pageNumber/{pageNumer}/pageSize/{pageSize}")]
+        [HttpGet("categories/pageNumber/{pageNumber}/pageSize/{pageSize}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion(1)]
-        public ActionResult<ApiResponse<PaginatedList<CategoryResponse>>> GetCategories(int pageNumer = 1,
-            int pageSize = 10, string? name = null)
+        public ActionResult<ApiResponse<PaginatedList<CategoryResponse>>> GetCategories(
+            int pageNumber = 1,
+            int pageSize = 10, 
+            string? name = null)
         {
-            var categories = _categoryService.GetCategories(name, pageNumer, pageSize);
+            var categories = _categoryService.GetCategories(name, pageNumber, pageSize);
             return Ok(new ApiResponse<PaginatedList<CategoryResponse>>
             {
                 IsSuccess = true,
@@ -63,7 +65,7 @@ namespace SoundStore.API.Controllers.v1
         /// </summary>
         /// <param name="id">Category's id</param>
         /// <returns></returns>
-        [HttpGet("category/{id}")]
+        [HttpGet("categories/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion(1)]
@@ -90,7 +92,8 @@ namespace SoundStore.API.Controllers.v1
         [MapToApiVersion(1)]
         public async Task<ActionResult<ApiResponse<string>>> UpdateCategory(int id, CategoryUpdatedRequest request)
         {
-            var result = await _categoryService.UpdateCategory(id, request.Name);
+            var result = await _categoryService.UpdateCategory(id, request.Name, 
+                request.Description ?? string.Empty);
             if (!result) return BadRequest();
             return Ok(new ApiResponse<string>
             {
@@ -109,7 +112,7 @@ namespace SoundStore.API.Controllers.v1
         [MapToApiVersion(1)]
         public async Task<ActionResult<ApiResponse<string>>> CreateCategory(CategoryCreatedRequest request)
         {
-            var result = await _categoryService.AddCategory(request.Name);
+            var result = await _categoryService.AddCategory(request.Name, request.Description);
             if (!result) return BadRequest();
             return Ok(new ApiResponse<string>
             {
