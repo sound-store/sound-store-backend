@@ -46,7 +46,7 @@
         /// <summary>
         /// Average rating score of a product
         /// </summary>
-        public decimal OverallRatingScore { get; set; }
+        public decimal? OverallRatingScore { get; set; }
 
         public ICollection<RatingResponse> RatingResponses { get; set; } = [];
     }
