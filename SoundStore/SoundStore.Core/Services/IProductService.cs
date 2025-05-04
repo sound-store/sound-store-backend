@@ -26,7 +26,7 @@ namespace SoundStore.Core.Services
 
         Task<bool> AddProduct(ProductCreatedRequest request);
 
-        Task<bool> UpdateProduct();
+        Task<bool> UpdateProduct(long id, ProductUpdatedRequest request);
 
         Task<bool> DeleteProduct(long productId);
     }

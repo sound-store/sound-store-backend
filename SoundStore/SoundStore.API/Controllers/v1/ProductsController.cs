@@ -122,15 +122,16 @@ namespace SoundStore.API.Controllers.v1
         /// Update the product
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="product"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPut("product/{id}")]
+        [HttpPut("product/{id}")]   
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion(1)]
-        public async Task<ActionResult<string>> UpdateProduct(long id, Product product)
+        public async Task<ActionResult<string>> UpdateProduct(long id, ProductUpdatedRequest request)
         {
-            var result = await _productService.UpdateProduct();
+            var result = await _productService.UpdateProduct(id, request);
             if (!result) return BadRequest();
             return Ok(new ApiResponse<string>
             {
