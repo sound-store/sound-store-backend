@@ -211,32 +211,18 @@ for (i = 0, l = charts.length; i < l; i++) {
 
 var assemblies = [
   {
-    "name": "SoundStore.API",
-    "classes": [
-      { "name": "Program", "rp": "SoundStore.API_Program.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 39, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Controllers.v1.AuthController", "rp": "SoundStore.API_AuthController.html", "cl": 0, "ucl": 31, "cal": 31, "tl": 85, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Controllers.v1.BaseApiController", "rp": "SoundStore.API_BaseApiController.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 35, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Controllers.v1.CategoriesController", "rp": "SoundStore.API_CategoriesController.html", "cl": 0, "ucl": 85, "cal": 85, "tl": 184, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Controllers.v1.ProductsController", "rp": "SoundStore.API_ProductsController.html", "cl": 0, "ucl": 68, "cal": 68, "tl": 186, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Controllers.v1.RatingsController", "rp": "SoundStore.API_RatingsController.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 63, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Controllers.v1.UsersController", "rp": "SoundStore.API_UsersController.html", "cl": 0, "ucl": 44, "cal": 44, "tl": 124, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Extensions.ServiceCollectionExtensions", "rp": "SoundStore.API_ServiceCollectionExtensions.html", "cl": 0, "ucl": 133, "cal": 133, "tl": 186, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Middlewares.GlobalExceptionHandlingMiddleware", "rp": "SoundStore.API_GlobalExceptionHandlingMiddleware.html", "cl": 0, "ucl": 40, "cal": 40, "tl": 72, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.API.Middlewares.UserClaimsMiddleware", "rp": "SoundStore.API_UserClaimsMiddleware.html", "cl": 0, "ucl": 29, "cal": 29, "tl": 62, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-    ]},
-  {
     "name": "SoundStore.Core",
     "classes": [
       { "name": "SoundStore.Core.Commons.ApiResponse<T>", "rp": "SoundStore.Core_ApiResponse_1.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Commons.AuditableEntity", "rp": "SoundStore.Core_AuditableEntity.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Commons.AuditableEntity", "rp": "SoundStore.Core_AuditableEntity.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.CloudinarySettings", "rp": "SoundStore.Core_CloudinarySettings.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.EmailSettings", "rp": "SoundStore.Core_EmailSettings.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.ErrorResponse", "rp": "SoundStore.Core_ErrorResponse.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.JwtSettings", "rp": "SoundStore.Core_JwtSettings.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Commons.PaginatedList<T>", "rp": "SoundStore.Core_PaginatedList_1.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Commons.PaginatedList<T>", "rp": "SoundStore.Core_PaginatedList_1.html", "cl": 13, "ucl": 2, "cal": 15, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.PayOSSettings", "rp": "SoundStore.Core_PayOSSettings.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Entities.AppUser", "rp": "SoundStore.Core_AppUser.html", "cl": 7, "ucl": 1, "cal": 8, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Entities.Category", "rp": "SoundStore.Core_Category.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Entities.AppUser", "rp": "SoundStore.Core_AppUser.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Entities.Category", "rp": "SoundStore.Core_Category.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Entities.Image", "rp": "SoundStore.Core_Image.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Entities.Order", "rp": "SoundStore.Core_Order.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Entities.OrderDetail", "rp": "SoundStore.Core_OrderDetail.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -244,29 +230,29 @@ var assemblies = [
       { "name": "SoundStore.Core.Entities.Rating", "rp": "SoundStore.Core_Rating.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Entities.SubCategory", "rp": "SoundStore.Core_SubCategory.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Entities.Transaction", "rp": "SoundStore.Core_Transaction.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Exceptions.DuplicatedException", "rp": "SoundStore.Core_DuplicatedException.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Exceptions.DuplicatedException", "rp": "SoundStore.Core_DuplicatedException.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Exceptions.ForbiddenException", "rp": "SoundStore.Core_ForbiddenException.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Exceptions.NoDataRetrievalException", "rp": "SoundStore.Core_NoDataRetrievalException.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Exceptions.NoDataRetrievalException", "rp": "SoundStore.Core_NoDataRetrievalException.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Filters.ProductFilterParameters", "rp": "SoundStore.Core_ProductFilterParameters.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Requests.AddedUserRequest", "rp": "SoundStore.Core_AddedUserRequest.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Requests.CategoryCreatedRequest", "rp": "SoundStore.Core_CategoryCreatedRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Requests.CategoryUpdatedRequest", "rp": "SoundStore.Core_CategoryUpdatedRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Requests.AddedUserRequest", "rp": "SoundStore.Core_AddedUserRequest.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Requests.CategoryCreatedRequest", "rp": "SoundStore.Core_CategoryCreatedRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Requests.CategoryUpdatedRequest", "rp": "SoundStore.Core_CategoryUpdatedRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Requests.LoginRequest", "rp": "SoundStore.Core_LoginRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Requests.ProductCreatedRequest", "rp": "SoundStore.Core_ProductCreatedRequest.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 63, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Requests.ProductRatingRequest", "rp": "SoundStore.Core_ProductRatingRequest.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Requests.ProductUpdatedRequest", "rp": "SoundStore.Core_ProductUpdatedRequest.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Requests.ProductUpdatedRequest", "rp": "SoundStore.Core_ProductUpdatedRequest.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 46, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Requests.SubCategoryCreatedRequest", "rp": "SoundStore.Core_SubCategoryCreatedRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Requests.SubCategoryUpdatedRequest", "rp": "SoundStore.Core_SubCategoryUpdatedRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Requests.UserRegistration", "rp": "SoundStore.Core_UserRegistration.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Responses.CategoryResponse", "rp": "SoundStore.Core_CategoryResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Responses.CustomerDetailedInfoResponse", "rp": "SoundStore.Core_CustomerDetailedInfoResponse.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Requests.UserRegistration", "rp": "SoundStore.Core_UserRegistration.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Responses.CategoryResponse", "rp": "SoundStore.Core_CategoryResponse.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Responses.CustomerDetailedInfoResponse", "rp": "SoundStore.Core_CustomerDetailedInfoResponse.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Responses.CustomerInfoResponse", "rp": "SoundStore.Core_CustomerInfoResponse.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Responses.LoginResponse", "rp": "SoundStore.Core_LoginResponse.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Responses.ProductImage", "rp": "SoundStore.Core_ProductImage.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 58, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Responses.ProductRatingResponse", "rp": "SoundStore.Core_ProductRatingResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Responses.ProductResponse", "rp": "SoundStore.Core_ProductResponse.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 58, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Models.Responses.RatingResponse", "rp": "SoundStore.Core_RatingResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Models.Responses.SubCategoryResponse", "rp": "SoundStore.Core_SubCategoryResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Models.Responses.SubCategoryResponse", "rp": "SoundStore.Core_SubCategoryResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Validations.AllowedImageFilesAttribute", "rp": "SoundStore.Core_AllowedImageFilesAttribute.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 35, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
@@ -285,7 +271,7 @@ var assemblies = [
       { "name": "SoundStore.Infrastructure.Data.UserRoleSeeder", "rp": "SoundStore.Infrastructure_UserRoleSeeder.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.DependencyInjection", "rp": "SoundStore.Infrastructure_DependencyInjection.html", "cl": 0, "ucl": 40, "cal": 40, "tl": 66, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.Helpers.DynamicSearchHelper", "rp": "SoundStore.Infrastructure_DynamicSearchHelper.html", "cl": 0, "ucl": 25, "cal": 25, "tl": 62, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.Helpers.PaginationHelper", "rp": "SoundStore.Infrastructure_PaginationHelper.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Infrastructure.Helpers.PaginationHelper", "rp": "SoundStore.Infrastructure_PaginationHelper.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.Migrations.AddDescription", "rp": "SoundStore.Infrastructure_AddDescription.html", "cl": 0, "ucl": 937, "cal": 937, "tl": 1051, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.Migrations.Fix", "rp": "SoundStore.Infrastructure_Fix.html", "cl": 0, "ucl": 1120, "cal": 1120, "tl": 1194, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.Migrations.Initial", "rp": "SoundStore.Infrastructure_Initial.html", "cl": 0, "ucl": 1067, "cal": 1067, "tl": 1186, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -301,15 +287,15 @@ var assemblies = [
   {
     "name": "SoundStore.Service",
     "classes": [
-      { "name": "SoundStore.Service.CategorySerivce", "rp": "SoundStore.Service_CategorySerivce.html", "cl": 0, "ucl": 208, "cal": 208, "tl": 279, "cb": 0, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Service.CategorySerivce", "rp": "SoundStore.Service_CategorySerivce.html", "cl": 94, "ucl": 122, "cal": 216, "tl": 287, "cb": 5, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.DependencyInjection", "rp": "SoundStore.Service_DependencyInjection.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.ImageService", "rp": "SoundStore.Service_ImageService.html", "cl": 0, "ucl": 29, "cal": 29, "tl": 47, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.PaymentService", "rp": "SoundStore.Service_PaymentService.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 51, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.ProductRatingService", "rp": "SoundStore.Service_ProductRatingService.html", "cl": 0, "ucl": 53, "cal": 53, "tl": 77, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Service.ProductService", "rp": "SoundStore.Service_ProductService.html", "cl": 0, "ucl": 296, "cal": 296, "tl": 360, "cb": 0, "tb": 44, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Service.ProductService", "rp": "SoundStore.Service_ProductService.html", "cl": 0, "ucl": 324, "cal": 324, "tl": 392, "cb": 0, "tb": 48, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.TokenService", "rp": "SoundStore.Service_TokenService.html", "cl": 0, "ucl": 27, "cal": 27, "tl": 45, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.UserClaimsService", "rp": "SoundStore.Service_UserClaimsService.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 20, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Service.UserService", "rp": "SoundStore.Service_UserService.html", "cl": 37, "ucl": 155, "cal": 192, "tl": 270, "cb": 4, "tb": 62, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Service.UserService", "rp": "SoundStore.Service_UserService.html", "cl": 113, "ucl": 79, "cal": 192, "tl": 270, "cb": 26, "tb": 62, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "SoundStore.Test",
@@ -336,18 +322,6 @@ var riskHotspots = [
       { "value": 28, "exceeded": true },
     ]},
   {
-    "assembly": "SoundStore.API", "class": "SoundStore.API.Middlewares.GlobalExceptionHandlingMiddleware", "reportPath": "SoundStore.API_GlobalExceptionHandlingMiddleware.html", "methodName": "HandleExceptionAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception)", "methodShortName": "HandleExceptionAsync(...)", "fileIndex": 0, "line": 31,
-    "metrics": [
-      { "value": 272, "exceeded": true },
-      { "value": 16, "exceeded": true },
-    ]},
-  {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "RegisterUser()", "methodShortName": "RegisterUser()", "fileIndex": 0, "line": 205,
-    "metrics": [
-      { "value": 272, "exceeded": true },
-      { "value": 16, "exceeded": true },
-    ]},
-  {
     "assembly": "SoundStore.Core", "class": "SoundStore.Core.Validations.AllowedImageFilesAttribute", "reportPath": "SoundStore.Core_AllowedImageFilesAttribute.html", "methodName": "IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)", "methodShortName": "IsValid(...)", "fileIndex": 0, "line": 12,
     "metrics": [
       { "value": 156, "exceeded": true },
@@ -355,12 +329,6 @@ var riskHotspots = [
     ]},
   {
     "assembly": "SoundStore.Infrastructure", "class": "SoundStore.Infrastructure.Helpers.DynamicSearchHelper", "reportPath": "SoundStore.Infrastructure_DynamicSearchHelper.html", "methodName": "ApplyFilters(System.Linq.IQueryable`1<T>,TFilter)", "methodShortName": "ApplyFilters(...)", "fileIndex": 0, "line": 17,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "AddUser()", "methodShortName": "AddUser()", "fileIndex": 0, "line": 31,
     "metrics": [
       { "value": 156, "exceeded": true },
       { "value": 12, "exceeded": false },
@@ -378,25 +346,13 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.API", "class": "SoundStore.API.Middlewares.UserClaimsMiddleware", "reportPath": "SoundStore.API_UserClaimsMiddleware.html", "methodName": "ExtractTokenClaims(Microsoft.AspNetCore.Http.HttpContext)", "methodShortName": "ExtractTokenClaims(...)", "fileIndex": 0, "line": 43,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
     "assembly": "SoundStore.Infrastructure", "class": "SoundStore.Infrastructure.SoundStoreDbContext", "reportPath": "SoundStore.Infrastructure_SoundStoreDbContext.html", "methodName": "OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)", "methodShortName": "OnModelCreating(...)", "fileIndex": 0, "line": 54,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.CategorySerivce", "reportPath": "SoundStore.Service_CategorySerivce.html", "methodName": "GetCategories(System.String,System.Int32,System.Int32)", "methodShortName": "GetCategories(...)", "fileIndex": 0, "line": 125,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.CategorySerivce", "reportPath": "SoundStore.Service_CategorySerivce.html", "methodName": "UpdateSubCategory()", "methodShortName": "UpdateSubCategory()", "fileIndex": 0, "line": 239,
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.CategorySerivce", "reportPath": "SoundStore.Service_CategorySerivce.html", "methodName": "UpdateSubCategory()", "methodShortName": "UpdateSubCategory()", "fileIndex": 0, "line": 247,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
@@ -432,10 +388,16 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "UpdateStatus()", "methodShortName": "UpdateStatus()", "fileIndex": 0, "line": 247,
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "AddUser()", "methodShortName": "AddUser()", "fileIndex": 0, "line": 31,
     "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
+      { "value": 41, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "RegisterUser()", "methodShortName": "RegisterUser()", "fileIndex": 0, "line": 205,
+    "metrics": [
+      { "value": 16, "exceeded": false },
+      { "value": 16, "exceeded": true },
     ]},
 ];
 
