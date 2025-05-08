@@ -41,10 +41,9 @@ namespace SoundStore.Service
                     throw new ArgumentException("Invalid user's role!");
                 }
 
-                var isEmailDuplicate = await userRepository.GetAll()
-                    .AsNoTracking()
-                    .AnyAsync(u => string.Equals(u.Email, request.Email));
-                if (isEmailDuplicate) throw new DuplicatedException("Email has already existed!");
+                var existedUser = await _userManager.FindByEmailAsync(request.Email);
+                if (existedUser is not null)
+                    throw new DuplicatedException("Email has already existed!");
 
                 var user = new AppUser
                 {

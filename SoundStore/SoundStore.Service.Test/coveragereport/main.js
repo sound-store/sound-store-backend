@@ -287,7 +287,7 @@ var assemblies = [
   {
     "name": "SoundStore.Service",
     "classes": [
-      { "name": "SoundStore.Service.CategorySerivce", "rp": "SoundStore.Service_CategorySerivce.html", "cl": 94, "ucl": 122, "cal": 216, "tl": 287, "cb": 5, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Service.CategoryService", "rp": "SoundStore.Service_CategoryService.html", "cl": 125, "ucl": 91, "cal": 216, "tl": 287, "cb": 15, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.DependencyInjection", "rp": "SoundStore.Service_DependencyInjection.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.ImageService", "rp": "SoundStore.Service_ImageService.html", "cl": 0, "ucl": 29, "cal": 29, "tl": 47, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.PaymentService", "rp": "SoundStore.Service_PaymentService.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 51, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -295,7 +295,7 @@ var assemblies = [
       { "name": "SoundStore.Service.ProductService", "rp": "SoundStore.Service_ProductService.html", "cl": 0, "ucl": 324, "cal": 324, "tl": 392, "cb": 0, "tb": 48, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.TokenService", "rp": "SoundStore.Service_TokenService.html", "cl": 0, "ucl": 27, "cal": 27, "tl": 45, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.UserClaimsService", "rp": "SoundStore.Service_UserClaimsService.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 20, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Service.UserService", "rp": "SoundStore.Service_UserService.html", "cl": 113, "ucl": 79, "cal": 192, "tl": 270, "cb": 26, "tb": 62, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Service.UserService", "rp": "SoundStore.Service_UserService.html", "cl": 129, "ucl": 62, "cal": 191, "tl": 269, "cb": 29, "tb": 62, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "SoundStore.Test",
@@ -340,7 +340,7 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "DeleteUser()", "methodShortName": "DeleteUser()", "fileIndex": 0, "line": 79,
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "DeleteUser()", "methodShortName": "DeleteUser()", "fileIndex": 0, "line": 78,
     "metrics": [
       { "value": 72, "exceeded": true },
       { "value": 8, "exceeded": false },
@@ -352,7 +352,7 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.CategorySerivce", "reportPath": "SoundStore.Service_CategorySerivce.html", "methodName": "UpdateSubCategory()", "methodShortName": "UpdateSubCategory()", "fileIndex": 0, "line": 247,
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.CategoryService", "reportPath": "SoundStore.Service_CategoryService.html", "methodName": "UpdateSubCategory()", "methodShortName": "UpdateSubCategory()", "fileIndex": 0, "line": 247,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
@@ -382,19 +382,13 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "GetUserInfoBasedOnToken()", "methodShortName": "GetUserInfoBasedOnToken()", "fileIndex": 0, "line": 146,
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "GetUserInfoBasedOnToken()", "methodShortName": "GetUserInfoBasedOnToken()", "fileIndex": 0, "line": 145,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "AddUser()", "methodShortName": "AddUser()", "fileIndex": 0, "line": 31,
-    "metrics": [
-      { "value": 41, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "RegisterUser()", "methodShortName": "RegisterUser()", "fileIndex": 0, "line": 205,
+    "assembly": "SoundStore.Service", "class": "SoundStore.Service.UserService", "reportPath": "SoundStore.Service_UserService.html", "methodName": "RegisterUser()", "methodShortName": "RegisterUser()", "fileIndex": 0, "line": 204,
     "metrics": [
       { "value": 16, "exceeded": false },
       { "value": 16, "exceeded": true },

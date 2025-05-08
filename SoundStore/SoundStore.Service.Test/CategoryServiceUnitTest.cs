@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MockQueryable;
 using Moq;
 using SoundStore.Core;
 using SoundStore.Core.Entities;
@@ -9,13 +10,13 @@ namespace SoundStore.Service.Test
     public class CategoryServiceUnitTest
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork = new();
-        private readonly Mock<ILogger<CategorySerivce>> _mockLogger = new();
+        private readonly Mock<ILogger<CategoryService>> _mockLogger = new();
         private readonly Mock<IRepository<Category>> _mockCategoryRepository = new();
 
-        private CategorySerivce CreateService()
+        private CategoryService CreateService()
         {
             _mockUnitOfWork.Setup(x => x.GetRepository<Category>()).Returns(_mockCategoryRepository.Object);
-            return new CategorySerivce(_mockUnitOfWork.Object, _mockLogger.Object);
+            return new CategoryService(_mockUnitOfWork.Object, _mockLogger.Object);
         }
 
         #region AddCategory_ShouldReturnTrue_WhenCategoryIsAddedSuccessfully
@@ -66,8 +67,13 @@ namespace SoundStore.Service.Test
             // Arrange
             var id = 1;
             var category = new Category { Id = id, Name = "Toys" };
+            var categories = new List<Category> { category }.AsQueryable();
+
+            // Build the mock IQueryable<Category> and return its .Object for GetAll()
+            var mockCategories = categories.BuildMock();
             _mockCategoryRepository.Setup(x => x.GetAll())
-                .Returns(new List<Category> { category }.AsQueryable());
+                .Returns(mockCategories);
+
             _mockCategoryRepository.Setup(x => x.Delete(category));
             _mockUnitOfWork.Setup(x => x.SaveAsync(default)).ReturnsAsync(1);
 
@@ -89,8 +95,11 @@ namespace SoundStore.Service.Test
         {
             // Arrange
             var id = 99;
-            _mockCategoryRepository.Setup(x => x.GetAll())
-                .Returns(new List<Category>().AsQueryable());
+            var categories = new List<Category>().AsQueryable();
+
+            // Use MockQueryable to create a mock async queryable
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
 
             var service = CreateService();
 
@@ -149,13 +158,13 @@ namespace SoundStore.Service.Test
                 Name = "Clothing",
                 Description = "Clothes",
                 CreatedAt = System.DateTime.Now,
-                SubCategories = new List<SubCategory>()
+                SubCategories = []
             };
-            _mockCategoryRepository.Setup(x => x.GetAll())
-                .Returns(new List<Category> { category }.AsQueryable());
+            var categories = new List<Category> { category }.AsQueryable();
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
 
             var service = CreateService();
-
             // Act
             var result = await service.GetCategory(id);
 
@@ -172,8 +181,11 @@ namespace SoundStore.Service.Test
         {
             // Arrange
             var id = 100;
-            _mockCategoryRepository.Setup(x => x.GetAll())
-                .Returns(new List<Category>().AsQueryable());
+            var categories = new List<Category>().AsQueryable();
+
+            // Use MockQueryable to create a mock async queryable
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
 
             var service = CreateService();
 
@@ -182,6 +194,7 @@ namespace SoundStore.Service.Test
         }
         #endregion
 
+
         #region UpdateCategory_ShouldReturnTrue_WhenCategoryIsUpdated
         [Fact]
         public async Task UpdateCategory_ShouldReturnTrue_WhenCategoryIsUpdated()
@@ -189,19 +202,20 @@ namespace SoundStore.Service.Test
             // Arrange
             var id = 1;
             var category = new Category { Id = id, Name = "Old", Description = "OldDesc" };
-            _mockCategoryRepository.Setup(x => x.GetAll())
-                .Returns(new List<Category> { category }.AsQueryable());
-            _mockCategoryRepository.Setup(x => x.Update(It.IsAny<Category>()));
+
+            var categories = new List<Category> { category }.AsQueryable();
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
             _mockUnitOfWork.Setup(x => x.SaveAsync(default)).ReturnsAsync(1);
 
             var service = CreateService();
-
             // Act
             var result = await service.UpdateCategory(id, "New", "NewDesc");
 
             // Assert
             Assert.True(result);
-            _mockCategoryRepository.Verify(x => x.Update(It.Is<Category>(c => c.Name == "New" && c.Description == "NewDesc")), Times.Once);
+            _mockCategoryRepository.Verify(x => x.Update(It.Is<Category>(c => c.Name == "New" && c.Description == "NewDesc")),
+                Times.Once);
             _mockUnitOfWork.Verify(x => x.SaveAsync(default), Times.Once);
         }
         #endregion
@@ -212,8 +226,11 @@ namespace SoundStore.Service.Test
         {
             // Arrange
             var id = 2;
-            _mockCategoryRepository.Setup(x => x.GetAll())
-                .Returns(new List<Category>().AsQueryable());
+            var categories = new List<Category>().AsQueryable();
+
+            // Use MockQueryable to create a mock async queryable
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
 
             var service = CreateService();
 
@@ -222,18 +239,21 @@ namespace SoundStore.Service.Test
         }
         #endregion
 
+
         #region GetCategoriesList_ShouldReturnList_WhenCategoriesExist
         [Fact]
         public async Task GetCategoriesList_ShouldReturnList_WhenCategoriesExist()
         {
             // Arrange
             var categories = new List<Category>
-                {
-                    new Category { Id = 1, Name = "A", SubCategories = new List<SubCategory>() },
-                    new Category { Id = 2, Name = "B", SubCategories = new List<SubCategory>() }
-                }.AsQueryable();
+            {
+                new() { Id = 1, Name = "A", SubCategories = [] },
+                new() { Id = 2, Name = "B", SubCategories = [] }
+            }.AsQueryable();
 
-            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(categories);
+            // Use MockQueryable to create a mock async queryable
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
 
             var service = CreateService();
 
@@ -243,15 +263,20 @@ namespace SoundStore.Service.Test
             // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
+            Assert.Contains(result, r => r.Name == "A");
+            Assert.Contains(result, r => r.Name == "B");
         }
         #endregion
+
 
         #region GetCategoriesList_ShouldThrowNoDataRetrievalException_WhenNoCategoriesExist
         [Fact]
         public async Task GetCategoriesList_ShouldThrowNoDataRetrievalException_WhenNoCategoriesExist()
         {
             // Arrange
-            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(new List<Category>().AsQueryable());
+            var categories = new List<Category>();
+            var mockCategories = categories.BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(mockCategories);
 
             var service = CreateService();
 

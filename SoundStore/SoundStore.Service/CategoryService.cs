@@ -10,11 +10,11 @@ using SoundStore.Infrastructure.Helpers;
 
 namespace SoundStore.Service
 {
-    public class CategorySerivce(IUnitOfWork unitOfWork,
-        ILogger<CategorySerivce> logger) : ICategoryService
+    public class CategoryService(IUnitOfWork unitOfWork,
+        ILogger<CategoryService> logger) : ICategoryService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly ILogger<CategorySerivce> _logger = logger;
+        private readonly ILogger<CategoryService> _logger = logger;
 
         public async Task<bool> AddCategory(string name, string description)
         {

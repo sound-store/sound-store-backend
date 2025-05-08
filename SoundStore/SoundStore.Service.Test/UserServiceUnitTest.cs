@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -9,6 +10,7 @@ using SoundStore.Core.Enums;
 using SoundStore.Core.Exceptions;
 using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Services;
+using System.Linq.Expressions;
 
 namespace SoundStore.Service.Test
 {
@@ -359,15 +361,9 @@ namespace SoundStore.Service.Test
                 Role = UserRoles.Customer
             };
 
-            var mockRepository = new Mock<IRepository<AppUser>>();
-            mockRepository.Setup(x => x.GetAll())
-                .Returns(new List<AppUser>().AsQueryable());
-
-            _mockUnitOfWork.Setup(x => x.GetRepository<AppUser>())
-                .Returns(mockRepository.Object);
-
+            // Setup UserManager mocks
             _mockUserManager.Setup(x => x.FindByEmailAsync(addedUserRequest.Email))
-                .ReturnsAsync((AppUser)null);
+                .ReturnsAsync((AppUser)null); // No existing user with this email
 
             _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<AppUser>(), addedUserRequest.Password))
                 .ReturnsAsync(IdentityResult.Success);
@@ -388,9 +384,9 @@ namespace SoundStore.Service.Test
 
             // Assert
             Assert.True(result);
+            _mockUserManager.Verify(x => x.FindByEmailAsync(addedUserRequest.Email), Times.Once);
             _mockUserManager.Verify(x => x.CreateAsync(It.IsAny<AppUser>(), addedUserRequest.Password), Times.Once);
             _mockUserManager.Verify(x => x.AddToRoleAsync(It.IsAny<AppUser>(), addedUserRequest.Role), Times.Once);
-            mockRepository.Verify(x => x.GetAll(), Times.Once);
         }
         #endregion
 

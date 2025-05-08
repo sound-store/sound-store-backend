@@ -15,7 +15,7 @@ namespace SoundStore.Service
 
             services.AddScoped(typeof(ITokenService), typeof(TokenService));
 
-            services.AddScoped<ICategoryService, CategorySerivce>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddScoped<IProductService, ProductService>();
 
