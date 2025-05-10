@@ -35,7 +35,7 @@ namespace SoundStore.Service.Test
             VerifyServiceRegistration<IUserService, UserService>(services);
             VerifyServiceRegistration<IProductRatingService, ProductRatingService>(services);
             VerifyServiceRegistration<IUserClaimsService, UserClaimsService>(services);
-            VerifyServiceRegistration<IImageService, ImageService>(services);
+            VerifyServiceRegistration<IFileStorageService, FileStorageService>(services);
             VerifyServiceRegistration<IPaymentService, PaymentService>(services);
         }
 

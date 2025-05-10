@@ -16,7 +16,7 @@ namespace SoundStore.Service.Test
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork = new();
         private readonly Mock<ILogger<ProductService>> _mockLogger = new();
-        private readonly Mock<IImageService> _mockImageService = new();
+        private readonly Mock<IFileStorageService> _mockImageService = new();
         private readonly Mock<IRepository<Product>> _mockProductRepository = new();
         private readonly Mock<IRepository<Image>> _mockImageRepository = new();
 
@@ -47,7 +47,7 @@ namespace SoundStore.Service.Test
             _mockProductRepository.Setup(x => x.GetAll())
                 .Returns(products);
 
-            _mockImageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>()))
+            _mockImageService.Setup(x => x.UploadImage(It.IsAny<IFormFile>()))
                 .ReturnsAsync("https://example.com/images/test.jpg");
 
             _mockUnitOfWork.Setup(x => x.SaveAsync(default)).ReturnsAsync(1);
@@ -60,7 +60,7 @@ namespace SoundStore.Service.Test
             // Assert
             Assert.True(result);
             _mockProductRepository.Verify(x => x.Add(It.IsAny<Product>()), Times.Once);
-            _mockImageService.Verify(x => x.UploadImageAsync(It.IsAny<IFormFile>()), Times.Once);
+            _mockImageService.Verify(x => x.UploadImage(It.IsAny<IFormFile>()), Times.Once);
             _mockUnitOfWork.Verify(x => x.SaveAsync(default), Times.Once);
         }
 
@@ -109,7 +109,7 @@ namespace SoundStore.Service.Test
             _mockProductRepository.Setup(x => x.GetAll())
                 .Returns(products);
 
-            _mockImageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>()))
+            _mockImageService.Setup(x => x.UploadImage(It.IsAny<IFormFile>()))
                 .ReturnsAsync((string)null);
 
             var service = CreateService();

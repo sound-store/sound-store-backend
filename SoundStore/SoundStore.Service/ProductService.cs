@@ -15,11 +15,11 @@ namespace SoundStore.Service
 {
     public class ProductService(IUnitOfWork unitOfWork,
         ILogger<ProductService> logger,
-        IImageService imageService) : IProductService
+        IFileStorageService imageService) : IProductService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<ProductService> _logger = logger;
-        private readonly IImageService _imageService = imageService;
+        private readonly IFileStorageService _imageService = imageService;
 
         public async Task<bool> AddProduct(ProductCreatedRequest request)
         {
@@ -53,7 +53,7 @@ namespace SoundStore.Service
                 productRepository.Add(product);
                 foreach (var img in request.Images)
                 {
-                    var imgUrl = await _imageService.UploadImageAsync(img) ??
+                    var imgUrl = await _imageService.UploadImage(img) ??
                         throw new Exception("Cannot upload the image!");
                     product.Images.Add(new Image
                     {

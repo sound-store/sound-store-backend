@@ -25,9 +25,11 @@ namespace SoundStore.Service
 
             services.AddScoped(typeof(IUserClaimsService), typeof(UserClaimsService));
 
-            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
 
             services.AddScoped<IPaymentService, PaymentService>();
+
+            services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             return services;
         }

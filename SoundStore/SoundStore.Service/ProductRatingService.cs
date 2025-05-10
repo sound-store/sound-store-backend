@@ -59,19 +59,21 @@ namespace SoundStore.Service
         public async Task<ProductRatingResponse> GetRatingOfAProduct(long productId)
         {
             var productRepository = _unitOfWork.GetRepository<Product>();
+
             var product = await productRepository.GetAll()
                 .AsNoTracking()
                 .Include(p => p.Ratings)
-                .Where(p => p.Id == productId)
-                .Select(p => new ProductRatingResponse
-                {
-                    ProductId = p.Id,
-                    RatingPoint = (decimal)p.Ratings.Average(r => r.RatingPoint),
-                    Comment = p.Ratings.Select(r => r.Comment!).ToList()
-                }).FirstOrDefaultAsync() 
-                    ?? throw new KeyNotFoundException("No rating data for this product!");
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
-            return product;
+            if (product == null || product.Ratings == null || !product.Ratings.Any())
+                throw new KeyNotFoundException("No rating data for this product!");
+
+            return new ProductRatingResponse
+            {
+                ProductId = product.Id,
+                RatingPoint = (decimal)product.Ratings.Average(r => r.RatingPoint),
+                Comment = product.Ratings.Select(r => r.Comment!).ToList()
+            };
         }
     }
 }
