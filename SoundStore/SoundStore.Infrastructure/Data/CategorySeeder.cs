@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SoundStore.Core.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoundStore.Infrastructure.Data
 {
+    [ExcludeFromCodeCoverage]
     public static class CategorySeeder
     {
         public static void SeedDataForCategory(this ModelBuilder modelBuilder)

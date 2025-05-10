@@ -83,8 +83,7 @@ namespace SoundStore.Service
 
                 if (user.Orders.Any() || user.Transactions.Any())
                 {
-                    throw new Exception(@"Cannot delete this user 
-                        because of data conflict in other tables!");
+                    throw new Exception("Cannot delete this user because of data conflict in other tables!");
                 }
                 var result = await _userManager.DeleteAsync(user);
                 if (!result.Succeeded)

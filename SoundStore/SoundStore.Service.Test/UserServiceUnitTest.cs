@@ -10,6 +10,7 @@ using SoundStore.Core.Enums;
 using SoundStore.Core.Exceptions;
 using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Services;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
 
 namespace SoundStore.Service.Test
@@ -490,5 +491,411 @@ namespace SoundStore.Service.Test
             Assert.Equal("Customer not found!", exception.Message);
         }
         #endregion
+
+        #region DeleteUser_ShouldBehaveAsExpected
+        [Fact]
+        public async Task DeleteUser_ShouldReturnTrue_WhenUserIsDeletedSuccessfully()
+        {
+            // Arrange
+            var userId = "1";
+            var user = new AppUser
+            {
+                Id = userId,
+                Orders = new List<Order>(),
+                Transactions = new List<Transaction>()
+            };
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            _mockUserManager.Setup(x => x.DeleteAsync(user))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act
+            var result = await userService.DeleteUser(userId);
+
+            // Assert
+            Assert.True(result);
+            _mockUserManager.Verify(x => x.FindByIdAsync(userId), Times.Once);
+            _mockUserManager.Verify(x => x.DeleteAsync(user), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteUser_ShouldThrowKeyNotFoundException_WhenUserDoesNotExist()
+        {
+            // Arrange
+            var userId = "nonexistent";
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync((AppUser)null);
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
+                () => userService.DeleteUser(userId));
+
+            Assert.Equal("User does not exist!", exception.Message);
+            _mockUserManager.Verify(x => x.FindByIdAsync(userId), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteUser_ShouldThrowException_WhenUserHasOrdersOrTransactions()
+        {
+            // Arrange
+            var userId = "1";
+            var user = new AppUser
+            {
+                Id = userId,
+                Orders = new List<Order> { new Order() },
+                Transactions = new List<Transaction>()
+            };
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(
+                () => userService.DeleteUser(userId));
+
+            Assert.Equal("Cannot delete this user because of data conflict in other tables!", exception.Message);
+            _mockUserManager.Verify(x => x.FindByIdAsync(userId), Times.Once);
+            _mockUserManager.Verify(x => x.DeleteAsync(It.IsAny<AppUser>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task DeleteUser_ShouldThrowException_WhenDeleteFails()
+        {
+            // Arrange
+            var userId = "1";
+            var user = new AppUser
+            {
+                Id = userId,
+                Orders = new List<Order>(),
+                Transactions = new List<Transaction>()
+            };
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            _mockUserManager.Setup(x => x.DeleteAsync(user))
+                .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Delete failed" }));
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(
+                () => userService.DeleteUser(userId));
+
+            Assert.Equal("An error occured while deleting the user!", exception.Message);
+            _mockUserManager.Verify(x => x.FindByIdAsync(userId), Times.Once);
+            _mockUserManager.Verify(x => x.DeleteAsync(user), Times.Once);
+        }
+        #endregion
+
+        #region GetUserInfoBasedOnToken_ShouldBehaveAsExpected
+        [Fact]
+        public async Task GetUserInfoBasedOnToken_ShouldReturnLoginResponse_WhenTokenIsValid()
+        {
+            // Arrange
+            var userId = "1";
+            var user = new AppUser
+            {
+                Id = userId,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                PhoneNumber = "1234567890",
+                Address = "123 Main St",
+                DateOfBirth = new DateOnly(1990, 1, 1)
+            };
+
+            _mockClaimsService.Setup(x => x.GetClaim(JwtRegisteredClaimNames.Sid))
+                .Returns(userId);
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            _mockUserManager.Setup(x => x.GetRolesAsync(user))
+                .ReturnsAsync(new List<string> { "Customer" });
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act
+            var result = await userService.GetUserInfoBasedOnToken();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(user.Id, result.Id);
+            Assert.Equal(user.FirstName, result.FirstName);
+            Assert.Equal(user.LastName, result.LastName);
+            Assert.Equal(user.Email, result.Email);
+            Assert.Equal(user.PhoneNumber, result.PhoneNumber);
+            Assert.Equal(user.Address, result.Address);
+            Assert.Equal(user.DateOfBirth, result.DateOfBirth);
+            Assert.Equal("Customer", result.Role);
+        }
+
+        [Fact]
+        public async Task GetUserInfoBasedOnToken_ShouldThrowUnauthorizedAccessException_WhenTokenIsMissing()
+        {
+            // Arrange
+            _mockClaimsService.Setup(x => x.GetClaim(JwtRegisteredClaimNames.Sid))
+                .Returns(string.Empty);
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => userService.GetUserInfoBasedOnToken());
+
+            Assert.Equal("User is not authenticated!", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetUserInfoBasedOnToken_ShouldThrowKeyNotFoundException_WhenUserDoesNotExist()
+        {
+            // Arrange
+            var userId = "nonexistent";
+
+            _mockClaimsService.Setup(x => x.GetClaim(JwtRegisteredClaimNames.Sid))
+                .Returns(userId);
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync((AppUser)null);
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
+                () => userService.GetUserInfoBasedOnToken());
+
+            Assert.Equal("User does not exist!", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetUserInfoBasedOnToken_ShouldThrowKeyNotFoundException_WhenRoleDoesNotExist()
+        {
+            // Arrange
+            var userId = "1";
+            var user = new AppUser
+            {
+                Id = userId,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com"
+            };
+
+            _mockClaimsService.Setup(x => x.GetClaim(JwtRegisteredClaimNames.Sid))
+                .Returns(userId);
+
+            _mockUserManager.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            _mockUserManager.Setup(x => x.GetRolesAsync(user))
+                .ReturnsAsync(new List<string>()); // No roles found
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<KeyNotFoundException>(
+                () => userService.GetUserInfoBasedOnToken());
+
+            Assert.Equal("User's role does not exist!", exception.Message);
+        }
+        #endregion
+
+        #region GetCustomers_ShouldBehaveAsExpected
+        [Fact]
+        public async Task GetCustomers_ShouldReturnPaginatedList_WhenCustomersExist()
+        {
+            // Arrange
+            var customers = new List<AppUser>
+            {
+                new AppUser
+                {
+                    Id = "1",
+                    FirstName = "John",
+                    LastName = "Doe",
+                    PhoneNumber = "1234567890",
+                    Address = "123 Main St",
+                    DateOfBirth = new DateOnly(1990, 1, 1),
+                    Status = UserState.Actived
+                },
+                new AppUser
+                {
+                    Id = "2",
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    PhoneNumber = "0987654321",
+                    Address = "456 Elm St",
+                    DateOfBirth = new DateOnly(1985, 5, 15),
+                    Status = UserState.Inactived
+                }
+            };
+
+            _mockUserManager.Setup(x => x.GetUsersInRoleAsync(UserRoles.Customer))
+                .ReturnsAsync(customers);
+
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act
+            var result = await userService.GetCustomers(null, pageNumber, pageSize);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(customers.Count, result.Items.Count);
+            Assert.Equal(customers[0].Id, result.Items[0].Id);
+            Assert.Equal(customers[0].FirstName + " " + customers[0].LastName, result.Items[0].FullName);
+            Assert.Equal(customers[0].PhoneNumber, result.Items[0].PhoneNumber);
+            Assert.Equal(customers[0].Address, result.Items[0].Address);
+            Assert.Equal(customers[0].DateOfBirth, result.Items[0].DateOfBirth);
+            Assert.Equal(customers[0].Status.ToString(), result.Items[0].Status);
+        }
+
+        [Fact]
+        public async Task GetCustomers_ShouldThrowNoDataRetrievalException_WhenNoCustomersExist()
+        {
+            // Arrange
+            _mockUserManager.Setup(x => x.GetUsersInRoleAsync(UserRoles.Customer))
+                .ReturnsAsync(new List<AppUser>());
+
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NoDataRetrievalException>(
+                () => userService.GetCustomers(null, pageNumber, pageSize));
+
+            Assert.Equal("No customers found!", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetCustomers_ShouldReturnFilteredPaginatedList_WhenNameFilterIsApplied()
+        {
+            // Arrange
+            var customers = new List<AppUser>
+            {
+                new AppUser
+                {
+                    Id = "1",
+                    FirstName = "John",
+                    LastName = "Doe",
+                    PhoneNumber = "1234567890",
+                    Address = "123 Main St",
+                    DateOfBirth = new DateOnly(1990, 1, 1),
+                    Status = UserState.Actived
+                },
+                new AppUser
+                {
+                    Id = "2",
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    PhoneNumber = "0987654321",
+                    Address = "456 Elm St",
+                    DateOfBirth = new DateOnly(1985, 5, 15),
+                    Status = UserState.Inactived
+                }
+            };
+
+            _mockUserManager.Setup(x => x.GetUsersInRoleAsync(UserRoles.Customer))
+                .ReturnsAsync(customers);
+
+            var pageNumber = 1;
+            var pageSize = 10;
+            var nameFilter = "Jane";
+
+            var userService = new UserService(
+                _mockUnitOfWork.Object,
+                _mockLogger.Object,
+                _mockUserManager.Object,
+                _mockTokenService.Object,
+                _mockClaimsService.Object
+            );
+
+            // Act
+            var result = await userService.GetCustomers(nameFilter, pageNumber, pageSize);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Single(result.Items);
+            Assert.Equal("2", result.Items[0].Id);
+            Assert.Equal("Jane Smith", result.Items[0].FullName);
+            Assert.Equal("0987654321", result.Items[0].PhoneNumber);
+            Assert.Equal("456 Elm St", result.Items[0].Address);
+            Assert.Equal(new DateOnly(1985, 5, 15), result.Items[0].DateOfBirth);
+            Assert.Equal(UserState.Inactived.ToString(), result.Items[0].Status);
+        }
+        #endregion
+
     }
 }

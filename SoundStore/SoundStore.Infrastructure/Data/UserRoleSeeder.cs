@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SoundStore.Core.Constants;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoundStore.Infrastructure.Data
 {
+    [ExcludeFromCodeCoverage]
     public static class UserRoleSeeder
     {
         public static void SeedUserRoles(this ModelBuilder builder)

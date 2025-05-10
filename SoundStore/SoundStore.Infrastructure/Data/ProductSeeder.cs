@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SoundStore.Core.Entities;
 using SoundStore.Core.Enums;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoundStore.Infrastructure.Data
 {
+    [ExcludeFromCodeCoverage]
     public static class ProductSeeder
     {
         public static void SeedDataForProduct(this ModelBuilder modelBuilder)

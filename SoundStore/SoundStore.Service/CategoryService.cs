@@ -256,11 +256,10 @@ namespace SoundStore.Service
                 if (subCategory is null)
                     throw new KeyNotFoundException("Sub category is not found!");
 
-                var isExistedCategory = await category.GetAll()
+                var existedCategory = await category.GetAll()
                     .AsNoTracking()
-                    .AnyAsync(c => c.Id == categoryId);
-                if (!isExistedCategory)
-                    throw new KeyNotFoundException("Category is not found!");
+                    .FirstOrDefaultAsync(c => c.Id == categoryId)
+                    ?? throw new KeyNotFoundException("Category does not exist!");
 
                 if (categoryId.HasValue)
                 {

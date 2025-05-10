@@ -1,8 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace SoundStore.Infrastructure.Helpers
 {
+    [ExcludeFromCodeCoverage]
     public static class DynamicSearchHelper
     {
         /// <summary>

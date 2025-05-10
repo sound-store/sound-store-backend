@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Controller.Test"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Service.Test", "SoundStore.Service.Test\SoundStore.Service.Test.csproj", "{F569C794-77F8-4B4C-0104-720764000370}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Infrastructure.Test", "SoundStore.Infrastructure.Test\SoundStore.Infrastructure.Test.csproj", "{8EB4FE5E-5A0E-4247-A378-DDE7C219F052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Core.Test", "SoundStore.Core.Test\SoundStore.Core.Test.csproj", "{F17542DF-8C36-4741-9921-3F74F414CCC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{F569C794-77F8-4B4C-0104-720764000370}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F569C794-77F8-4B4C-0104-720764000370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F569C794-77F8-4B4C-0104-720764000370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB4FE5E-5A0E-4247-A378-DDE7C219F052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB4FE5E-5A0E-4247-A378-DDE7C219F052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB4FE5E-5A0E-4247-A378-DDE7C219F052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB4FE5E-5A0E-4247-A378-DDE7C219F052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F17542DF-8C36-4741-9921-3F74F414CCC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F17542DF-8C36-4741-9921-3F74F414CCC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F17542DF-8C36-4741-9921-3F74F414CCC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F17542DF-8C36-4741-9921-3F74F414CCC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +72,10 @@ Global
 		{5EF9A370-C56C-4EF8-BF4C-0D955C4283B7} = {BB2E5682-E339-47F9-8A63-71B53880513C}
 		{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3} = {F8A99091-CEA6-4237-BD54-F8A24019465D}
 		{F569C794-77F8-4B4C-0104-720764000370} = {F8A99091-CEA6-4237-BD54-F8A24019465D}
+		{8EB4FE5E-5A0E-4247-A378-DDE7C219F052} = {F8A99091-CEA6-4237-BD54-F8A24019465D}
+		{F17542DF-8C36-4741-9921-3F74F414CCC9} = {F8A99091-CEA6-4237-BD54-F8A24019465D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF34AB22-EBA2-461C-BC24-A3B74B41E75E}
 	EndGlobalSection
 EndGlobal

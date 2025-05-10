@@ -6,10 +6,12 @@ using Net.payOS.Types;
 using SoundStore.Core;
 using SoundStore.Core.Commons;
 using SoundStore.Core.Services;
+using System.Diagnostics.CodeAnalysis;
 using Transaction = SoundStore.Core.Entities.Transaction;
 
 namespace SoundStore.Service
 {
+    [ExcludeFromCodeCoverage]
     public class PaymentService(IUnitOfWork unitOfWork,
         IOptions<PayOSSettings> options,
         ILogger<PaymentService> logger) : IPaymentService

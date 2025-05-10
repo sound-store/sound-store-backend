@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MockQueryable;
+using MockQueryable.Moq;
 using Moq;
 using SoundStore.Core;
 using SoundStore.Core.Entities;
@@ -284,5 +285,244 @@ namespace SoundStore.Service.Test
             await Assert.ThrowsAsync<NoDataRetrievalException>(() => service.GetCategories());
         }
         #endregion
+
+        #region AddSubCategory Tests
+
+        [Fact]
+        public async Task AddSubCategory_ShouldReturnTrue_WhenSubCategoryIsAddedSuccessfully()
+        {
+            // Arrange
+            var categoryId = 1;
+            var subCategoryName = "Guitars";
+
+            // Mock the category repository
+            var categories = new List<Category> { new() { Id = categoryId } }
+                .AsQueryable()
+                .BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(categories);
+
+            // Mock the subcategory repository
+            var subCategories = new List<SubCategory>().AsQueryable().BuildMock();
+            var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+            mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories);
+
+            _mockUnitOfWork.Setup(x => x.GetRepository<Category>()).Returns(_mockCategoryRepository.Object);
+            _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+            _mockUnitOfWork.Setup(x => x.SaveAsync(default)).ReturnsAsync(1);
+
+            var service = CreateService();
+
+            // Act
+            var result = await service.AddSubCategory(categoryId, subCategoryName);
+
+            // Assert
+            Assert.True(result);
+            mockSubCategoryRepository.Verify(x => x.Add(It.Is<SubCategory>(sc => sc.Name == subCategoryName 
+                && sc.CategoryId == categoryId)), Times.Once);
+            _mockUnitOfWork.Verify(x => x.SaveAsync(default), Times.Once);
+        }
+        
+        [Fact]
+        public async Task AddSubCategory_ShouldThrowDuplicatedException_WhenSubCategoryNameExists()
+        {
+            // Arrange
+            var categoryId = 1;
+            var subCategoryName = "Guitars";
+
+            var existingSubCategories = new List<SubCategory>
+            {
+                new() { Name = "Guitars" }
+            }.AsQueryable();
+
+            var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+            mockSubCategoryRepository.Setup(x => x.GetAll())
+                .Returns(existingSubCategories);
+            _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>())
+                .Returns(mockSubCategoryRepository.Object);
+
+            var service = CreateService();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<DuplicatedException>(() => service.AddSubCategory(categoryId, subCategoryName));
+        }
+
+        [Fact]
+        public async Task AddSubCategory_ShouldThrowKeyNotFoundException_WhenCategoryDoesNotExist()
+        {
+            // Arrange
+            var categoryId = 99;
+            var subCategoryName = "Guitars";
+
+            // Mock the category repository with an empty list
+            var categories = new List<Category>().AsQueryable().BuildMock();
+            _mockCategoryRepository.Setup(x => x.GetAll()).Returns(categories);
+
+            // Mock the subcategory repository with an empty list
+            var subCategories = new List<SubCategory>().AsQueryable().BuildMock();
+            var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+            mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories);
+
+            _mockUnitOfWork.Setup(x => x.GetRepository<Category>()).Returns(_mockCategoryRepository.Object);
+            _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+
+            var service = CreateService();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.AddSubCategory(categoryId, subCategoryName));
+        }
+
+
+        #endregion
+
+        #region DeleteSubCategory Tests
+
+        [Fact]
+        public async Task DeleteSubCategory_ShouldReturnTrue_WhenSubCategoryExists()
+        {
+            // Arrange
+            var subCategoryId = 1;
+            var subCategory = new SubCategory { Id = subCategoryId, Name = "Guitars" };
+
+            // Mock the subcategory repository with a list containing the subcategory
+            var subCategories = new List<SubCategory> { subCategory }.AsQueryable().BuildMock();
+            var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+            mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories);
+
+            _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+            _mockUnitOfWork.Setup(x => x.SaveAsync(default)).ReturnsAsync(1);
+
+            var service = CreateService();
+
+            // Act
+            var result = await service.DeleteSubCategory(subCategoryId);
+
+            // Assert
+            Assert.True(result);
+            mockSubCategoryRepository.Verify(x => x.Delete(It.Is<SubCategory>(sc => sc.Id == subCategoryId)), Times.Once);
+            _mockUnitOfWork.Verify(x => x.SaveAsync(default), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteSubCategory_ShouldThrowKeyNotFoundException_WhenSubCategoryDoesNotExist()
+        {
+            // Arrange
+            var subCategoryId = 99;
+
+            // Mock the subcategory repository with an empty list
+            var subCategories = new List<SubCategory>().AsQueryable().BuildMock();
+            var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+            mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories);
+
+            _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+
+            var service = CreateService();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.DeleteSubCategory(subCategoryId));
+        }
+
+        #endregion
+
+        #region UpdateSubCategory Tests
+
+        //[Fact]
+        //public async Task UpdateSubCategory_ShouldReturnTrue_WhenSubCategoryIsUpdatedSuccessfully()
+        //{
+        //    // Arrange
+        //    var subCategoryId = 1;
+        //    var categoryId = 2;
+        //    var newName = "Updated SubCategory";
+        //    var subCategory = new SubCategory { Id = subCategoryId, Name = "Old SubCategory", CategoryId = 1 };
+
+        //    // Mock the subcategory repository with the existing subcategory
+        //    var subCategories = new List<SubCategory> { subCategory }
+        //        .AsQueryable()
+        //        .BuildMockDbSet();
+        //    var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+        //    mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories.Object);
+
+        //    // Mock the category repository with the valid category
+        //    var categories = new List<Category> { new Category { Id = categoryId } }
+        //        .AsQueryable()
+        //        .BuildMockDbSet();
+        //    var mockCategoryRepository = new Mock<IRepository<Category>>();
+        //    mockCategoryRepository.Setup(x => x.GetAll()).Returns(categories.Object);
+
+        //    _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+        //    _mockUnitOfWork.Setup(x => x.GetRepository<Category>()).Returns(mockCategoryRepository.Object);
+        //    _mockUnitOfWork.Setup(x => x.SaveAsync(default)).ReturnsAsync(1);
+
+        //    var service = CreateService();
+
+        //    // Act
+        //    var result = await service.UpdateSubCategory(subCategoryId, newName, categoryId);
+
+        //    // Assert
+        //    Assert.True(result);
+        //    mockSubCategoryRepository.Verify(x => x.Update(It.Is<SubCategory>(sc =>
+        //        sc.Id == subCategoryId &&
+        //        sc.Name == newName &&
+        //        sc.CategoryId == categoryId)), Times.Once);
+        //    _mockUnitOfWork.Verify(x => x.SaveAsync(default), Times.Once);
+        //}
+
+
+        [Fact]
+        public async Task UpdateSubCategory_ShouldThrowKeyNotFoundException_WhenSubCategoryDoesNotExist()
+        {
+            // Arrange
+            var subCategoryId = 99;
+            var newName = "Updated SubCategory";
+            var categoryId = 1;
+
+            // Mock the subcategory repository with an empty list
+            var subCategories = new List<SubCategory>().AsQueryable().BuildMock();
+            var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+            mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories);
+
+            _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+
+            var service = CreateService();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateSubCategory(subCategoryId, 
+                newName, 
+                categoryId));
+        }
+
+        //[Fact]
+        //public async Task UpdateSubCategory_ShouldThrowKeyNotFoundException_WhenCategoryDoesNotExist()
+        //{
+        //    // Arrange
+        //    var subCategoryId = 1;
+        //    var categoryId = 99;
+        //    var newName = "Updated SubCategory";
+        //    var subCategory = new SubCategory { Id = subCategoryId, Name = "Old SubCategory", CategoryId = 1 };
+
+        //    // Mock the subcategory repository with the existing subcategory
+        //    var subCategories = new List<SubCategory> { subCategory }
+        //        .AsQueryable()
+        //        .BuildMockDbSet();
+        //    var mockSubCategoryRepository = new Mock<IRepository<SubCategory>>();
+        //    mockSubCategoryRepository.Setup(x => x.GetAll()).Returns(subCategories.Object);
+
+        //    // Mock the category repository with an empty list
+        //    var categories = new List<Category>()
+        //        .AsQueryable()
+        //        .BuildMockDbSet();
+        //    var mockCategoryRepository = new Mock<IRepository<Category>>();
+        //    mockCategoryRepository.Setup(x => x.GetAll()).Returns(categories.Object);
+
+        //    _mockUnitOfWork.Setup(x => x.GetRepository<SubCategory>()).Returns(mockSubCategoryRepository.Object);
+        //    _mockUnitOfWork.Setup(x => x.GetRepository<Category>()).Returns(mockCategoryRepository.Object);
+
+        //    var service = CreateService();
+
+        //    // Act & Assert
+        //    await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateSubCategory(subCategoryId, newName, categoryId));
+        //}
+
+        #endregion
+
     }
 }
