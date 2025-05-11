@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BB2E5682-E33
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F8A99091-CEA6-4237-BD54-F8A24019465D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Controller.Test", "SoundStore.Controller.Test\SoundStore.Controller.Test.csproj", "{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.API.Test", "SoundStore.Controller.Test\SoundStore.API.Test.csproj", "{DA5D723A-1D21-4FA2-A181-DF7DBB8670B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundStore.Service.Test", "SoundStore.Service.Test\SoundStore.Service.Test.csproj", "{F569C794-77F8-4B4C-0104-720764000370}"
 EndProject

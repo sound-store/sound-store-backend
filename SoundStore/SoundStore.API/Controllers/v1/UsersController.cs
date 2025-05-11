@@ -29,6 +29,9 @@ namespace SoundStore.API.Controllers.v1
             int pageSize,
             string? name = null)
         {
+            // Replace null name with an empty string
+            name ??= string.Empty;
+
             var customers = await _userService.GetCustomers(name!, pageNumber, pageSize);
             return Ok(new ApiResponse<PaginatedList<CustomerInfoResponse>>
             {
@@ -71,6 +74,7 @@ namespace SoundStore.API.Controllers.v1
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<string>> AddUser([FromBody] AddedUserRequest value)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var result = await _userService.AddUser(value);
             return Ok(new ApiResponse<string>
             {

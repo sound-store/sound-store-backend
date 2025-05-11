@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SoundStore.Core.Commons;
-using SoundStore.Core.Entities;
 using SoundStore.Core.Models.Filters;
 using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Models.Responses;

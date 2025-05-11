@@ -1,9 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SoundStore.Core.Commons;
-using SoundStore.Core.Constants;
 using SoundStore.Core.Models.Requests;
 using SoundStore.Core.Models.Responses;
 using SoundStore.Core.Services;
