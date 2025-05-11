@@ -215,7 +215,7 @@ var assemblies = [
     "classes": [
       { "name": "SoundStore.Core.Commons.ApiResponse<T>", "rp": "SoundStore.Core_ApiResponse_1.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.AuditableEntity", "rp": "SoundStore.Core_AuditableEntity.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Core.Commons.CloudinarySettings", "rp": "SoundStore.Core_CloudinarySettings.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Core.Commons.CloudinarySettings", "rp": "SoundStore.Core_CloudinarySettings.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.ErrorResponse", "rp": "SoundStore.Core_ErrorResponse.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.JwtSettings", "rp": "SoundStore.Core_JwtSettings.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Core.Commons.PaginatedList<T>", "rp": "SoundStore.Core_PaginatedList_1.html", "cl": 13, "ucl": 2, "cal": 15, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -257,23 +257,16 @@ var assemblies = [
   {
     "name": "SoundStore.Infrastructure",
     "classes": [
-      { "name": "SoundStore.Infrastructure.Configs.OrderDetailTypeConfig", "rp": "SoundStore.Infrastructure_OrderDetailTypeConfig.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.Configs.OrderTypeConfig", "rp": "SoundStore.Infrastructure_OrderTypeConfig.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.Configs.ProductTypeConfig", "rp": "SoundStore.Infrastructure_ProductTypeConfig.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.Configs.RatingTypeConfiguration", "rp": "SoundStore.Infrastructure_RatingTypeConfiguration.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.Configs.SubCategoryTypeConfig", "rp": "SoundStore.Infrastructure_SubCategoryTypeConfig.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.Configs.TransactionTypeConfig", "rp": "SoundStore.Infrastructure_TransactionTypeConfig.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.DependencyInjection", "rp": "SoundStore.Infrastructure_DependencyInjection.html", "cl": 0, "ucl": 40, "cal": 40, "tl": 66, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.Helpers.PaginationHelper", "rp": "SoundStore.Infrastructure_PaginationHelper.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.Repository<T>", "rp": "SoundStore.Infrastructure_Repository_1.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Infrastructure.SoundStoreDbContext", "rp": "SoundStore.Infrastructure_SoundStoreDbContext.html", "cl": 0, "ucl": 45, "cal": 45, "tl": 84, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Infrastructure.UnitOfWork", "rp": "SoundStore.Infrastructure_UnitOfWork.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 33, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "SoundStore.Service",
     "classes": [
       { "name": "SoundStore.Service.CategoryService", "rp": "SoundStore.Service_CategoryService.html", "cl": 180, "ucl": 35, "cal": 215, "tl": 286, "cb": 22, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SoundStore.Service.CloudinaryService", "rp": "SoundStore.Service_CloudinaryService.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SoundStore.Service.CloudinaryService", "rp": "SoundStore.Service_CloudinaryService.html", "cl": 9, "ucl": 3, "cal": 12, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.DependencyInjection", "rp": "SoundStore.Service_DependencyInjection.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.FileStorageService", "rp": "SoundStore.Service_FileStorageService.html", "cl": 17, "ucl": 0, "cal": 17, "tl": 35, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "SoundStore.Service.ProductRatingService", "rp": "SoundStore.Service_ProductRatingService.html", "cl": 53, "ucl": 0, "cal": 53, "tl": 79, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -305,12 +298,6 @@ var riskHotspots = [
     "metrics": [
       { "value": 72, "exceeded": true },
       { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "SoundStore.Infrastructure", "class": "SoundStore.Infrastructure.SoundStoreDbContext", "reportPath": "SoundStore.Infrastructure_SoundStoreDbContext.html", "methodName": "OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)", "methodShortName": "OnModelCreating(...)", "fileIndex": 0, "line": 54,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
     ]},
   {
     "assembly": "SoundStore.Service", "class": "SoundStore.Service.ProductService", "reportPath": "SoundStore.Service_ProductService.html", "methodName": "GetProducts(System.Int32,System.Int32,SoundStore.Core.Models.Filters.ProductFilterParameters,System.String)", "methodShortName": "GetProducts(...)", "fileIndex": 0, "line": 79,

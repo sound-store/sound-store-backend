@@ -5,9 +5,11 @@ using Microsoft.Extensions.Logging;
 using SoundStore.Core.Entities;
 using SoundStore.Infrastructure.Configs;
 using SoundStore.Infrastructure.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoundStore.Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public class SoundStoreDbContext : IdentityDbContext<AppUser>
     {
         public SoundStoreDbContext()

@@ -1,5 +1,8 @@
-﻿namespace SoundStore.Core.Commons
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SoundStore.Core.Commons
 {
+    [ExcludeFromCodeCoverage]
     public sealed class PayOSSettings
     {
         public string ClientId { get; init; } = null!;

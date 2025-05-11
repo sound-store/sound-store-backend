@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SoundStore.Infrastructure.Configs
 {
-    //[ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     public class ProductTypeConfig : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> builder)

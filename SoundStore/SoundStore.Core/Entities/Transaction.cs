@@ -1,8 +1,10 @@
 ﻿using SoundStore.Core.Commons;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoundStore.Core.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class Transaction : IEntity<long>
     {
         public long Id { get; set; }
