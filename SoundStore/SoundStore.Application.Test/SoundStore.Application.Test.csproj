@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\SoundStore.API\SoundStore.API.csproj" />
+	  <ProjectReference Include="..\SoundStore.Application\SoundStore.Application.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -7,13 +7,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\SoundStore.API\SoundStore.API.csproj" />
 	  <ProjectReference Include="..\SoundStore.Application\SoundStore.Application.csproj" />
-	  <ProjectReference Include="..\SoundStore.Domain\SoundStore.Domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="EntityConfigs\" />
-	  <Folder Include="Data\" />
+	  <ProjectReference Include="..\SoundStore.Web\SoundStore.Web.csproj" />
 	</ItemGroup>
 
 </Project>

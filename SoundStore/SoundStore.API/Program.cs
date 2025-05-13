@@ -1,38 +1,24 @@
-using SoundStore.API.Extensions;
-using SoundStore.API.Middlewares;
-using SoundStore.Infrastructure;
-using SoundStore.Service;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Register(builder.Configuration);
 
-builder.Services.RegisterServices();
-
-builder.Services.RegisterInfrastructure(builder.Configuration);
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseSwagger();
-
-app.UseSwaggerUI(o =>
+if (app.Environment.IsDevelopment())
 {
-    o.SwaggerEndpoint("/swagger/v1/swagger.json", "SoundStore v1");
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-
 app.UseAuthorization();
-
-app.UseMiddleware<UserClaimsMiddleware>();
-
-app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-
-app.UseCors("AllowAll");
 
 app.MapControllers();
 
